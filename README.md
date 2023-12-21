@@ -13,3 +13,6 @@ Hi there, I'm Josuan, a second-year BSIT student, and I'm working on my final pr
 
 # Inventory Page UI
 ![Screenshot 2023-12-21 214927](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/adedfbb0-f7d3-4784-a54e-193d954d3cb4)
+
+# Category Page UI
+![Screenshot 2023-12-21 220009](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/e001e109-88d8-4ed1-b62d-d9b2df73aeaf)
