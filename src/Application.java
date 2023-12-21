@@ -26,6 +26,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.nio.file.Path;
+import java.util.AbstractMap.SimpleEntry;
 
 //@author Josuan
 public final class Application extends javax.swing.JFrame {
@@ -3325,21 +3327,34 @@ public final class Application extends javax.swing.JFrame {
         System.out.println("File 1: "+get_imgFile1);
         System.out.println("File 2: "+get_imgFile2);
         
-        String getImg = "nullProfile.jpg";
+        SimpleEntry<String, Path> imageEntry = new SimpleEntry<>("nullProfile.jpg", null);
+        
         if (get_imgFile1 != null && get_imgFile2 == null) {
-            getImg = ImageManagement.addImages(firstName, get_imgFile1);
+            imageEntry = ImageManagement.generateImageName(firstName, get_imgFile1);
         } else if (get_imgFile2 != null && get_imgFile1 == null) {
-            getImg = ImageManagement.addImages(firstName, get_imgFile2);
+            imageEntry = ImageManagement.generateImageName(firstName, get_imgFile2);
         } else if (get_imgFile1 == null && get_imgFile2 == null) {
             
         } else {
-            getImg = ImageManagement.addImages(firstName, get_imgFile1);
+            imageEntry = ImageManagement.generateImageName(firstName, get_imgFile1);
         }
         
-        Object[] allValue = Utilities.getAllUserInput(userId, firstName, lastName, userName, password, confirmPassword, gender, getBirthDateDateChooser, getImg,4,this);
+        Object[] allValue = Utilities.getAllUserInput(userId, firstName, lastName, userName, password, confirmPassword, gender, getBirthDateDateChooser, imageEntry.getKey(),4,this);
         
         if(allValue != null){
-            UMT.addUser(allValue);
+            if(UMT.addUser(allValue)){
+                if(imageEntry.getValue() != null){
+                    if (get_imgFile1 != null && get_imgFile2 == null) {
+                        ImageManagement.addTheImage(get_imgFile1, imageEntry.getValue());
+                    } else if (get_imgFile2 != null && get_imgFile1 == null) {
+                         ImageManagement.addTheImage(get_imgFile2, imageEntry.getValue());
+                    } else if (get_imgFile1 == null && get_imgFile2 == null) {
+
+                    } else {
+                         ImageManagement.addTheImage(get_imgFile1, imageEntry.getValue());
+                    }
+                }
+            }
             usersTable.setModel(UMT.DisplayUserData());
         }
     }//GEN-LAST:event_addUserBtnActionPerformed
@@ -3433,7 +3448,7 @@ public final class Application extends javax.swing.JFrame {
     }//GEN-LAST:event_quantitySpinnerStateChanged
 
     private void discountSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_discountSpinnerStateChanged
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_discountSpinnerStateChanged
 
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed

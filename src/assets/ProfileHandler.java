@@ -1,5 +1,7 @@
 package assets;
 
+import DbOperations.DbConnection;
+import DbOperations.UserManagement;
 import com.formdev.flatlaf.IntelliJTheme;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -20,9 +22,12 @@ import javax.swing.JLabel;
 
 
 public final class ProfileHandler extends javax.swing.JFrame {
+    private final DbConnection DBC = new DbConnection();
+    private final UserManagement UMT = new UserManagement(this);
     
-    private Icon oldImage;
-    private String getName;
+    private final Icon oldImage;
+    private final String getName;
+    private final String userID;
     public ProfileHandler(Icon profileIcon, String userID,String getName) {
         initComponents();
         
@@ -36,6 +41,8 @@ public final class ProfileHandler extends javax.swing.JFrame {
         backLabelActions(backLabel, new String[]{"back2.png","back1.png","back3.png"});
         ImageManagement.setupFileDragAndDrop(panelRound3, new Color(224,231,255), imageAvatar2);
         this.oldImage = profileIcon;
+        this.getName = getName;
+        this.userID = userID;
     }
 
 
@@ -219,12 +226,16 @@ public final class ProfileHandler extends javax.swing.JFrame {
 
     private void ChangeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangeBtnActionPerformed
         File getDropFile = ImageManagement.getDroppedFile(); 
+        
         if(getDropFile != null){
-            if (oldImage != null) {
+            if (oldImage != null && !(oldImage.toString().equals("src/images/nullProfile.jpg"))) {
                 ImageManagement.deleteImage(oldImage);
             }
-            ImageManagement.insertImage(getDropFile,getName);
+            
+            ImageManagement.insertImage(getDropFile,ImageManagement.makeImageName(getName));
+            
             imageAvatar1.setIcon(imageAvatar2.getIcon());
+            UMT.changeImageFileName(ImageManagement.makeImageName(getName), userID);
         }
     }//GEN-LAST:event_ChangeBtnActionPerformed
 

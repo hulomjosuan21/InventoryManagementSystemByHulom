@@ -80,7 +80,7 @@ public class SalesManagement extends DbConnection{
             double subtotal = ((Number) model.getValueAt(i, 4)).doubleValue(); // Subtotal at index 4
             double total = ((Number) model.getValueAt(i, 5)).doubleValue(); // Total at index 5
 
-            receipt.append(String.format("%d. %-30s x%-9d $%.2f\n", i + 1, itemName, quantity, price));
+            receipt.append(String.format("%d. %-30s x%-9d ₱%.2f\n", i + 1, itemName, quantity, price));
         }
         receipt.append("----------------------------------------------------------------\n");
         double subtotalSum = 0.0;
@@ -91,8 +91,8 @@ public class SalesManagement extends DbConnection{
             totalSum += ((Number) model.getValueAt(i, 5)).doubleValue(); // Summing up totals
         }
 
-        receipt.append(String.format("Subtotal:                 $%.2f\n", subtotalSum));
-        receipt.append(String.format("Total:                    $%.2f\n", totalSum));
+        receipt.append(String.format("Subtotal:                 ₱%.2f\n", subtotalSum));
+        receipt.append(String.format("Total:                    ₱%.2f\n", totalSum));
         receipt.append("----------------------------------------------------------------\n\n");
         receipt.append("Thank you for your purchase!");
 

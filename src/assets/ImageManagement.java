@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.AbstractMap.SimpleEntry;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -50,7 +51,7 @@ public class ImageManagement {
         return null;
     }
 
-    public static String addImages(String name, File g_img) {
+    public static SimpleEntry<String, Path> generateImageName(String name, File g_img) {
         File selectedFile = g_img;
 
         if (selectedFile != null) {
@@ -69,34 +70,23 @@ public class ImageManagement {
                         count++;
                     }
                 }
-
-                Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
-                return imageName;
-            } catch (IOException e) {
-                return "nullProfile.jpg";
+                return new SimpleEntry<>(imageName, destination);
+            } catch (Exception e) {
+                return new SimpleEntry<>("nullProfile.jpg", null);
             }
         }
-        return "nullProfile.jpg";
+        return new SimpleEntry<>("nullProfile.jpg", null);
     }
     
-    public static void addNewImage(String name, File imgFile) {
-        String imageName = makeImageName(name);
-        Path destination = Paths.get("src/images", imageName);
+    public static void addTheImage(File selectedFile, Path destination){
+        if(destination != null){
+            try{
+                Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+            }catch (IOException e) {
 
-        try {
-            if (!imgFile.getName().toLowerCase().endsWith(".jpg")) {
-                BufferedImage image = ImageIO.read(imgFile);
-                File newFile = new File(imgFile.getParent(), imageName + ".jpg");
-                ImageIO.write(image, "jpg", newFile);
-                destination = Paths.get("src/images", newFile.getName());
             }
-
-            Files.copy(imgFile.toPath(), destination);
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-}  
+    }
     
     public static void deleteImage(Icon icon) {
         String imagePath = icon.toString(); 
@@ -104,20 +94,13 @@ public class ImageManagement {
         File imageFile = new File(imagePath);
         
         if (imageFile.exists()) {
-            boolean deleted = imageFile.delete();
-            if (deleted) {
-                System.out.println("Image deleted successfully!");
-            } else {
-                System.out.println("Failed to delete the image.");
-            }
-        } else {
-            System.out.println("Image file not found.");
-        }      
+            imageFile.delete();
+        }   
     }   
     
     public static void insertImage(File newImageFile, String newImageName) {
         File sourceDir = new File("src/images");
-        File destinationFile = new File(sourceDir, newImageName+".jpg");
+        File destinationFile = new File(sourceDir, newImageName);
 
         try {
             Files.copy(newImageFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);

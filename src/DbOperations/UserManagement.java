@@ -304,13 +304,13 @@ public class UserManagement extends DbConnection{
         }
     } 
     
-    public void changeImageFileName(String newVal,int _id){
+    public void changeImageFileName(String newVal,String _id){
         String query = "UPDATE "+DbTables.USERTABLE.getValue()+" SET "+DbColumns.USERSCOLUMNS.getValues()[7]+" = ? WHERE "+DbColumns.USERSCOLUMNS.getValues()[0]+" = ?";
         
         try{
             prepare = connection.prepareStatement(query);
             prepare.setString(1, newVal);
-            prepare.setInt(2, _id);
+            prepare.setString(2, _id);
             
             prepare.executeUpdate();
             
@@ -478,7 +478,8 @@ public class UserManagement extends DbConnection{
         return userCount;
     }
 
-    public void addUser(Object[] values){
+    public boolean addUser(Object[] values){
+        boolean isSuccessful = true;
         String query = "INSERT INTO "+DbTables.USERTABLE.getValue()+" ("+DbColumns.USERSCOLUMNS.getValues()[0]+
                 ", "+DbColumns.USERSCOLUMNS.getValues()[1]+
                 ", "+DbColumns.USERSCOLUMNS.getValues()[2]+
@@ -498,7 +499,9 @@ public class UserManagement extends DbConnection{
             prepare.close();
         } catch(SQLException e){
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
+            isSuccessful = false;
         }        
+        return isSuccessful;
     }
 
 }
