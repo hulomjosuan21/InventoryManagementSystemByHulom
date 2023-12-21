@@ -1,7 +1,8 @@
-
 import DbOperations.*;
 import com.formdev.flatlaf.IntelliJTheme;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
@@ -13,6 +14,10 @@ public class LoginFrame extends javax.swing.JFrame {
     
     public LoginFrame() {
         initComponents();
+        
+        Image appIcon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/loginPage.png"));
+        this.setIconImage(appIcon);
+        
         setBackground(new Color(0,0,0,0));
         close_min_max_Screen();     
     }

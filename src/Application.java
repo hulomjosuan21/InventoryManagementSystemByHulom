@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.EventObject;
 import javax.swing.DefaultCellEditor;
@@ -22,8 +21,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 //@author Josuan
 public final class Application extends javax.swing.JFrame {
@@ -39,6 +41,10 @@ public final class Application extends javax.swing.JFrame {
     
     public Application() {
         initComponents();
+        
+        Image appIcon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/appLogo.png"));
+        this.setIconImage(appIcon);
+
         sideBarMenu();
         close_min_max_Screen(closeBtn,minimizeBtn,maximizeBtn);
         close_min_max_Screen(closeBtn1,minimizeBtn1,maximizeBtn1);
@@ -3497,7 +3503,15 @@ public final class Application extends javax.swing.JFrame {
         
         ProfileHandler profileHandler = new ProfileHandler(imageAvatar1.getIcon(),get_id,get_fname);
         profileHandler.setVisible(true);
-        imageAvatar1.repaint();
+ 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if (profileHandler != null && profileHandler.isVisible()) {
+                    profileHandler.dispose();
+                }
+            }
+        });
     }//GEN-LAST:event_imageAvatar1MouseClicked
 
     private void imageAvatar2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageAvatar2MouseEntered
@@ -3947,3 +3961,6 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JTable usersTable;
     // End of variables declaration//GEN-END:variables
 }
+//Hi there, I'm Josuan, a second-year BSIT student, and I'm working on my final project for Information Management 1 Subject. 
+//This project involves using the Java programming language to implement the 
+//Create, Read, Update, and Delete (CRUD) functionalities.

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -24,6 +25,10 @@ public final class ProfileHandler extends javax.swing.JFrame {
     private String getName;
     public ProfileHandler(Icon profileIcon, String userID,String getName) {
         initComponents();
+        
+        Image appIcon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/new&changeImage.png"));
+        this.setIconImage(appIcon);       
+        
         setBackground(new Color(0,0,0,0));
         System.out.println(profileIcon);
         imageAvatar1.setIcon(profileIcon);
