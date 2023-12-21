@@ -18,4 +18,4 @@ Hi there, I'm Josuan, a second-year BSIT student, and I'm working on my final pr
 ![Screenshot 2023-12-21 220009](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/e001e109-88d8-4ed1-b62d-d9b2df73aeaf)
 
 # Sales Page UI
-![Screenshot 2023-12-21 220504](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/6b01fb86-fcbb-4f35-be0c-42ae38c576d5)
+![Screenshot 2023-12-21 221643](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/0079ccb7-d48b-4c08-a21f-c4a802584915)
