@@ -2656,6 +2656,9 @@
                     <Property name="toolTipText" type="java.lang.String" value="Credit for this application goes to Josuan."/>
                     <Property name="verticalAlignment" type="int" value="3"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="titleLabelMouseClicked"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="close_min_max_Panel">
 

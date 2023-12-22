@@ -27,7 +27,9 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
+import javax.swing.Icon;
 
 //@author Josuan
 public final class Application extends javax.swing.JFrame {
@@ -1829,6 +1831,11 @@ public final class Application extends javax.swing.JFrame {
         titleLabel.setText("POS AND INVENTORY MANAGEMENT SYSTEM");
         titleLabel.setToolTipText("Credit for this application goes to Josuan.");
         titleLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        titleLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                titleLabelMouseClicked(evt);
+            }
+        });
 
         closeBtn.setBackground(new java.awt.Color(255, 95, 90));
         closeBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -3473,7 +3480,12 @@ public final class Application extends javax.swing.JFrame {
         double total = Double.parseDouble(getTotalTextField.getText());
         double received = Double.parseDouble(receivedTextField.getText());
         
-        getBalanceTextField.setText("₱ "+(received-total));
+        double balance = received - total;
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String formattedBalance = "₱ " + decimalFormat.format(balance);
+
+        getBalanceTextField.setText(formattedBalance);
     }//GEN-LAST:event_payBtnActionPerformed
 
     private void inventoryTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryTableMouseClicked
@@ -3516,7 +3528,7 @@ public final class Application extends javax.swing.JFrame {
         String get_id = AppManagement.getCurrentUser(this);
         String get_fname = UMT.getFName(get_id);
         
-        ProfileHandler profileHandler = new ProfileHandler(imageAvatar1.getIcon(),get_id,get_fname);
+        ProfileHandler profileHandler = new ProfileHandler(imageAvatar1.getIcon(),get_id);
         profileHandler.setVisible(true);
  
         addWindowListener(new WindowAdapter() {
@@ -3525,6 +3537,14 @@ public final class Application extends javax.swing.JFrame {
                 if (profileHandler != null && profileHandler.isVisible()) {
                     profileHandler.dispose();
                 }
+            }
+        });
+
+        profileHandler.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                imageAvatar1.repaint();  
+                imageAvatar1.revalidate();
             }
         });
     }//GEN-LAST:event_imageAvatar1MouseClicked
@@ -3579,6 +3599,10 @@ public final class Application extends javax.swing.JFrame {
             totalSpinner.setModel(spinnerModel1);
         }
     }//GEN-LAST:event_totalSpinnerStateChanged
+
+    private void titleLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleLabelMouseClicked
+         
+    }//GEN-LAST:event_titleLabelMouseClicked
 
     public static void switchPanel(JLayeredPane layered, JPanel panel){
         layered.removeAll();

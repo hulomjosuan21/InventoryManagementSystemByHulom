@@ -17,6 +17,8 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +45,7 @@ public class ImageManagement {
         JFileChooser fileChooser = new JFileChooser();
         String picturesDir = System.getProperty("user.home");
         fileChooser.setCurrentDirectory(new File(picturesDir)); 
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg"));
         int result = fileChooser.showOpenDialog(p_c);
         if (result == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile();
@@ -88,15 +90,25 @@ public class ImageManagement {
         }
     }
     
-    public static void deleteImage(Icon icon) {
-        String imagePath = icon.toString(); 
-        System.out.println(imagePath);
-        File imageFile = new File(imagePath);
-        
-        if (imageFile.exists()) {
-            imageFile.delete();
-        }   
-    }   
+    public static void replaceImageFile(File oldFile, File newFile) {
+        if (oldFile.exists()) {
+            try (FileInputStream fis = new FileInputStream(newFile);
+                 FileOutputStream fos = new FileOutputStream(oldFile)) {
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = fis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, length);
+                }
+                System.out.println("Image file replaced successfully.");
+
+            } catch (IOException e) {
+                System.out.println("Failed to replace image file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Old image file does not exist.");
+        }
+    }
     
     public static void insertImage(File newImageFile, String newImageName) {
         File sourceDir = new File("src/images");

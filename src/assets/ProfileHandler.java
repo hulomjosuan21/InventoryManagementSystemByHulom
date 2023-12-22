@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardCopyOption;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -25,10 +26,9 @@ public final class ProfileHandler extends javax.swing.JFrame {
     private final DbConnection DBC = new DbConnection();
     private final UserManagement UMT = new UserManagement(this);
     
-    private final Icon oldImage;
-    private final String getName;
-    private final String userID;
-    public ProfileHandler(Icon profileIcon, String userID,String getName) {
+    private File fromLabelImage;
+    private final File oldImage;
+    public ProfileHandler(Icon profileIcon, String userID) {
         initComponents();
         
         Image appIcon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/new&changeImage.png"));
@@ -40,9 +40,8 @@ public final class ProfileHandler extends javax.swing.JFrame {
         imageAvatar2.setIcon(profileIcon);
         backLabelActions(backLabel, new String[]{"back2.png","back1.png","back3.png"});
         ImageManagement.setupFileDragAndDrop(panelRound3, new Color(224,231,255), imageAvatar2);
-        this.oldImage = profileIcon;
-        this.getName = getName;
-        this.userID = userID;
+        
+        this.oldImage = new File(profileIcon.toString());
     }
 
 
@@ -124,6 +123,11 @@ public final class ProfileHandler extends javax.swing.JFrame {
         changeLabel.setForeground(new java.awt.Color(224, 231, 255));
         changeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         changeLabel.setText("Choose a image file");
+        changeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                changeLabelMouseClicked(evt);
+            }
+        });
 
         changeLabel1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         changeLabel1.setForeground(new java.awt.Color(224, 231, 255));
@@ -223,19 +227,17 @@ public final class ProfileHandler extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_backLabelMouseClicked
 
+    private File getNewImage(File f1, File f2){
+        return (f1 != null) ? f1 : f2;
+    }
 
+    
     private void ChangeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangeBtnActionPerformed
-        File getDropFile = ImageManagement.getDroppedFile(); 
-        
-        if(getDropFile != null){
-            if (oldImage != null && !(oldImage.toString().equals("src/images/nullProfile.jpg"))) {
-                ImageManagement.deleteImage(oldImage);
-            }
+        File fromDropFile = ImageManagement.getDroppedFile(); 
+        File newImage = getNewImage(fromDropFile,fromLabelImage);
+        if (newImage != null) {
+            ImageManagement.replaceImageFile(oldImage, newImage);
             
-            ImageManagement.insertImage(getDropFile,ImageManagement.makeImageName(getName));
-            
-            imageAvatar1.setIcon(imageAvatar2.getIcon());
-            UMT.changeImageFileName(ImageManagement.makeImageName(getName), userID);
         }
     }//GEN-LAST:event_ChangeBtnActionPerformed
 
@@ -246,24 +248,11 @@ public final class ProfileHandler extends javax.swing.JFrame {
     private void imageAvatar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageAvatar2MouseClicked
         ImageManagement.openImage(imageAvatar2.getIcon());
     }//GEN-LAST:event_imageAvatar2MouseClicked
-    
-    public static void deleteImage(Icon icon) {
-        String imagePath = icon.toString(); 
-        System.out.println(imagePath);
-        File imageFile = new File(imagePath);
-        
-        if (imageFile.exists()) {
-            boolean deleted = imageFile.delete();
-            if (deleted) {
-                System.out.println("Image deleted successfully!");
-            } else {
-                System.out.println("Failed to delete the image.");
-            }
-        } else {
-            System.out.println("Image file not found.");
-        }      
-    }   
-    
+
+    private void changeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeLabelMouseClicked
+        this.fromLabelImage = ImageManagement.getImage(this);
+    }//GEN-LAST:event_changeLabelMouseClicked
+ 
     public void backLabelActions(JLabel label,String[] iconName){
         label.addMouseListener(new MouseAdapter(){
             @Override
