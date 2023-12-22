@@ -4,3 +4,18 @@ Hi there, I'm Josuan, a second-year BSIT student, and I'm working on my final pr
 
 # Log in UI
 ![Screenshot 2023-12-21 115758](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/c93fdfae-e51f-497e-bc8b-968c9dfdab19)
+
+# Dashboard UI
+![Screenshot 2023-12-21 214108](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/1d48d77f-ba29-4829-b9d2-28b371b860c6)
+
+# User Page UI
+![Screenshot 2023-12-21 214724](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/3dfc5c2a-8f49-404d-b7a6-6e5ce4bafc1d)
+
+# Inventory Page UI
+![Screenshot 2023-12-21 214927](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/adedfbb0-f7d3-4784-a54e-193d954d3cb4)
+
+# Category Page UI
+![Screenshot 2023-12-21 220009](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/e001e109-88d8-4ed1-b62d-d9b2df73aeaf)
+
+# Sales Page UI
+![Screenshot 2023-12-21 221643](https://github.com/Webwan07/InventoryManagementSystemByHulom/assets/110836440/0079ccb7-d48b-4c08-a21f-c4a802584915)
