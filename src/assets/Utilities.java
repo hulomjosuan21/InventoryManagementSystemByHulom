@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultCellEditor;
@@ -27,10 +28,16 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.text.DefaultFormatter;
 
 public class Utilities extends DbOperations.DbConnection{
-    public static String getCurrentDate() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-        return now.format(formatter);
+
+    public static String getCurrentDate(JDateChooser g_date) {
+        if (g_date == null || g_date.getDate() == null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+            return dateFormat.format(new Date());
+        } else {
+            Date selectedDate = g_date.getDate();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+            return dateFormat.format(selectedDate);
+        }
     }
 
     public static String getCurrentTime() {
@@ -418,5 +425,18 @@ public class Utilities extends DbOperations.DbConnection{
     public static String userIdGenerator(int numberOfUsers) {
         String formattedNumber = String.format("%03d", numberOfUsers);
         return "user" + formattedNumber + ".wan";
+    }
+   
+    public static double convertPercentageToNumber(String percentString) {
+        if(!percentString.equals("No discount")){
+            String numericString = percentString.replaceAll("%", "");
+        
+            double numericValue = Double.parseDouble(numericString);
+            double actualNumber = numericValue / 100.0;
+
+            return actualNumber;
+        }else{
+            return 0.0;
+        }
     }
 }

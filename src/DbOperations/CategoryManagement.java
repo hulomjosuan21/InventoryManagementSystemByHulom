@@ -40,7 +40,7 @@ public class CategoryManagement extends DbConnection{
         return model;
     }
     
-    public void addCategoryValue(String[] values, Component parentComponent){
+    public void addCategoryValue(String[] values){
         String query = "INSERT INTO "+DbTables.CATEGORYTABLE.getValue()+" ("+DbColumns.CATEGORYCOLUMNS.getValues()[1]+","+DbColumns.CATEGORYCOLUMNS.getValues()[2]+") VALUES (?,?)";
        
         try{
@@ -55,7 +55,7 @@ public class CategoryManagement extends DbConnection{
         }
     }
     
-    public void EditCategoryValue(Object newVal, int colIdx, Object ID,Component parentComponent){
+    public void EditCategoryValue(Object newVal, int colIdx, Object ID){
         String query = "UPDATE "+DbTables.CATEGORYTABLE.getValue()+" SET "+DbColumns.CATEGORYCOLUMNS.getValues()[colIdx]+" = ? WHERE ("+DbColumns.CATEGORYCOLUMNS.getValues()[0]+" = ?)";
         
         try{

@@ -55,7 +55,7 @@ public class SalesManagement extends DbConnection{
         }
     }
     
-    public String generateReceipt(DefaultTableModel model) {
+    public String generateReceipt(DefaultTableModel model, String getDate) {
         StringBuilder receipt = new StringBuilder();
 
         receipt.append("                                    Josuan\n");
@@ -63,7 +63,7 @@ public class SalesManagement extends DbConnection{
         receipt.append("                                    Receipt\n");
         receipt.append("----------------------------------------------------------------\n");
 
-        String currentDate = Utilities.getCurrentDate();
+        String currentDate = getDate;
         String currentTime = Utilities.getCurrentTime();
         receipt.append("Date: ").append(currentDate).append("\n");
         receipt.append("Time: ").append(currentTime).append("\n\n");
@@ -80,7 +80,7 @@ public class SalesManagement extends DbConnection{
             double subtotal = ((Number) model.getValueAt(i, 4)).doubleValue(); // Subtotal at index 4
             double total = ((Number) model.getValueAt(i, 5)).doubleValue(); // Total at index 5
 
-            receipt.append(String.format("%d. %-30s x%-9d ₱%.2f\n", i + 1, itemName, quantity, price));
+            receipt.append(String.format("%d. %-30s x%-9d "+Helper.currency+"%.2f\n", i + 1, itemName, quantity, price));
         }
         receipt.append("----------------------------------------------------------------\n");
         double subtotalSum = 0.0;
@@ -91,8 +91,8 @@ public class SalesManagement extends DbConnection{
             totalSum += ((Number) model.getValueAt(i, 5)).doubleValue(); // Summing up totals
         }
 
-        receipt.append(String.format("Subtotal:                 ₱%.2f\n", subtotalSum));
-        receipt.append(String.format("Total:                    ₱%.2f\n", totalSum));
+        receipt.append(String.format("Subtotal:                 "+Helper.currency+"%.2f\n", subtotalSum));
+        receipt.append(String.format("Total:                    "+Helper.currency+"%.2f\n", totalSum));
         receipt.append("----------------------------------------------------------------\n\n");
         receipt.append("Thank you for your purchase!");
 
@@ -104,4 +104,5 @@ public class SalesManagement extends DbConnection{
         String invoiceNumber = uniqueID.substring(0, 8) + ".wan";
         return invoiceNumber;
     }
+  
 }

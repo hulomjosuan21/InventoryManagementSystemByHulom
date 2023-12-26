@@ -5,7 +5,7 @@ public enum DbTables {
     CATEGORYTABLE("categorytable"), 
     APPTABLE("apptable"), 
     USERTABLE("userstable"),
-    RECORDSTABLE("recordstable");
+    RECORDSTABLE("recordstable"),PURCHASEDTABLE("purchasedtable");
     
     private final String value;
     

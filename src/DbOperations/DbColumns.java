@@ -6,7 +6,8 @@ public enum DbColumns {
     CATEGORYCOLUMNS(new String[]{"categoryID","categoryName","dateCreated"}),
     APPCOLUMNS(new String[]{"appID","countUsers","currentUser"}), 
     USERSCOLUMNS(new String[]{"userId","firstname","lastname","username","password",
-        "birthdate","gender","profileImgPath","userType"}), RECORDSCOLUMNS(new String[]{"recordDate","sold"});
+        "birthdate","gender","profileImgPath","userType"}), RECORDSCOLUMNS(new String[]{"recordDate","sold"}),
+        PURCHASEDCOLUMNS(new String[]{"invoiceNumber","product","discountPercent","quantity","subtotal","total","purchasedDate"});
     
     private final String[] values;
     

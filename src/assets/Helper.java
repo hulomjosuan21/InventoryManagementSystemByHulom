@@ -19,4 +19,5 @@ public class Helper {
     
     public static String dateFormat = "yyyy-MM-dd";
     public static String[] listOfGender = {"Male","Female"};
+    public static char currency = '₱';
 }

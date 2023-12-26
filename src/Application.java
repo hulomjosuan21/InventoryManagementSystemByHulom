@@ -28,7 +28,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Date;
 import javax.swing.Icon;
 
 //@author Josuan
@@ -36,7 +38,7 @@ public final class Application extends javax.swing.JFrame {
     private final DbConnection DBC = new DbConnection();
     private final InventoryManagement IMT = new InventoryManagement(this);
     private final CategoryManagement CMT = new CategoryManagement(this);
-    private final RecordManagement RMT = new RecordManagement();
+    private final RecordManagement RMT = new RecordManagement(this);
     private final AppManagement AMT = new AppManagement(this);
     private final UserManagement UMT = new UserManagement(this);
     private final SalesManagement SMT = new SalesManagement(this);
@@ -57,6 +59,7 @@ public final class Application extends javax.swing.JFrame {
         userInit();
         salesInit();
         adminInit();
+        recordInit();
         if (this.getExtendedState() == this.MAXIMIZED_BOTH) {
             this.setExtendedState(this.NORMAL);
         } else {
@@ -91,10 +94,6 @@ public final class Application extends javax.swing.JFrame {
     
     public void inventoryInit(){
         inventoryTable.setModel(IMT.DisplayInventoryData());
-        totalProductsLabel.setText(RMT.countProducts()+"");
-        soldOldLabel.setText(RMT.getOldSold()+"");
-        soldTotayLabel.setText(RMT.getSoldToday()+"");
-        outStockLabel.setText(RMT.getOutOfStocks()+"");
        
         inventoryTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()) {
             @Override
@@ -128,6 +127,15 @@ public final class Application extends javax.swing.JFrame {
                 return false;
             }
         });        
+    }
+    
+    public void recordInit(){
+        totalProductsLabel.setText(RMT.countProducts()+"");
+        soldOldLabel.setText(RMT.getOldSold()+"");
+        soldTotayLabel.setText(RMT.getSoldToday()+"");
+        outStockLabel.setText(RMT.getOutOfStocks()+"");
+        todaysalesLabel.setText(Helper.currency+" "+RMT.getTotalSalesToday());
+        totalSalesLabel.setText(Helper.currency+" "+RMT.getTotalSales());        
     }
     
     public void userInit(){
@@ -205,7 +213,7 @@ public final class Application extends javax.swing.JFrame {
         d3 = new customComponents.PanelRound();
         panelRound6 = new customComponents.PanelRound();
         jLabel4 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        totalSalesLabel = new javax.swing.JLabel();
         d4 = new customComponents.PanelRound();
         panelRound7 = new customComponents.PanelRound();
         jLabel5 = new javax.swing.JLabel();
@@ -217,7 +225,7 @@ public final class Application extends javax.swing.JFrame {
         d6 = new customComponents.PanelRound();
         panelRound12 = new customComponents.PanelRound();
         jLabel7 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        todaysalesLabel = new javax.swing.JLabel();
         usersPanel = new customComponents.PanelRound();
         panelRound5 = new customComponents.PanelRound();
         imageAvatar1 = new customComponents.ImageAvatar();
@@ -264,7 +272,7 @@ public final class Application extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         recieptTextArea = new javax.swing.JTextArea();
         payBtn = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
+        printBtn = new javax.swing.JButton();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
@@ -278,7 +286,7 @@ public final class Application extends javax.swing.JFrame {
         itemNameTextField = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         descriptionTextField = new javax.swing.JTextField();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        dateCHooser = new com.toedter.calendar.JDateChooser();
         jLabel26 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         priceSpinner = new javax.swing.JSpinner();
@@ -377,6 +385,8 @@ public final class Application extends javax.swing.JFrame {
         addUserBtn = new javax.swing.JButton();
         termServiceCheckBox = new javax.swing.JCheckBox();
         showPasswordCheckBox = new javax.swing.JCheckBox();
+        panelRound20 = new customComponents.PanelRound();
+        testBtn1 = new javax.swing.JButton();
         close_min_max_Panel1 = new javax.swing.JPanel();
         closeBtn1 = new customComponents.CircleButton();
         minimizeBtn1 = new customComponents.CircleButton();
@@ -545,10 +555,10 @@ public final class Application extends javax.swing.JFrame {
             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
         );
 
-        jLabel10.setFont(new java.awt.Font("Calibri", 1, 60)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("0");
+        totalSalesLabel.setFont(new java.awt.Font("Calibri", 1, 60)); // NOI18N
+        totalSalesLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalSalesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalSalesLabel.setText("0");
 
         javax.swing.GroupLayout d3Layout = new javax.swing.GroupLayout(d3);
         d3.setLayout(d3Layout);
@@ -561,7 +571,7 @@ public final class Application extends javax.swing.JFrame {
             .addGroup(d3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(d3Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(totalSalesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         d3Layout.setVerticalGroup(
@@ -573,7 +583,7 @@ public final class Application extends javax.swing.JFrame {
             .addGroup(d3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(d3Layout.createSequentialGroup()
                     .addGap(47, 47, 47)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(totalSalesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -734,10 +744,10 @@ public final class Application extends javax.swing.JFrame {
             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
         );
 
-        jLabel13.setFont(new java.awt.Font("Calibri", 1, 60)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("0");
+        todaysalesLabel.setFont(new java.awt.Font("Calibri", 1, 60)); // NOI18N
+        todaysalesLabel.setForeground(new java.awt.Color(255, 255, 255));
+        todaysalesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        todaysalesLabel.setText("0");
 
         javax.swing.GroupLayout d6Layout = new javax.swing.GroupLayout(d6);
         d6.setLayout(d6Layout);
@@ -750,7 +760,7 @@ public final class Application extends javax.swing.JFrame {
             .addGroup(d6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(d6Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(todaysalesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         d6Layout.setVerticalGroup(
@@ -762,7 +772,7 @@ public final class Application extends javax.swing.JFrame {
             .addGroup(d6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(d6Layout.createSequentialGroup()
                     .addGap(47, 47, 47)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(todaysalesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -1377,9 +1387,14 @@ public final class Application extends javax.swing.JFrame {
             }
         });
 
-        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print.png"))); // NOI18N
-        jButton10.setText("PRINT");
-        jButton10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        printBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print.png"))); // NOI18N
+        printBtn.setText("PRINT");
+        printBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        printBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printBtnActionPerformed(evt);
+            }
+        });
 
         jLabel33.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 255, 255));
@@ -1414,7 +1429,7 @@ public final class Application extends javax.swing.JFrame {
                     .addGroup(panelRound10Layout.createSequentialGroup()
                         .addComponent(payBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(printBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(panelRound10Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
@@ -1448,7 +1463,7 @@ public final class Application extends javax.swing.JFrame {
                     .addComponent(jLabel35))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelRound10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(printBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(payBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
@@ -1491,8 +1506,8 @@ public final class Application extends javax.swing.JFrame {
         descriptionTextField.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         descriptionTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
 
-        jDateChooser2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
-        jDateChooser2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        dateCHooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        dateCHooser.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
 
         jLabel26.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(255, 255, 255));
@@ -1570,7 +1585,7 @@ public final class Application extends javax.swing.JFrame {
                         .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(102, 102, 102))
                     .addComponent(descriptionTextField)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(dateCHooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(panelRound14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelRound14Layout.createSequentialGroup()
@@ -1623,7 +1638,7 @@ public final class Application extends javax.swing.JFrame {
                     .addGroup(panelRound14Layout.createSequentialGroup()
                         .addComponent(jLabel26)
                         .addGap(6, 6, 6)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(dateCHooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound14Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(panelRound14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2853,6 +2868,36 @@ public final class Application extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Add User", panelRound16);
 
+        panelRound20.setBackground(new java.awt.Color(165, 180, 252));
+        panelRound20.setRoundTopLeft(50);
+        panelRound20.setRoundTopRight(50);
+
+        testBtn1.setText("Test Button #1");
+        testBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testBtn1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelRound20Layout = new javax.swing.GroupLayout(panelRound20);
+        panelRound20.setLayout(panelRound20Layout);
+        panelRound20Layout.setHorizontalGroup(
+            panelRound20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound20Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(testBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(935, Short.MAX_VALUE))
+        );
+        panelRound20Layout.setVerticalGroup(
+            panelRound20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound20Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(testBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(431, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Test Tab", panelRound20);
+
         close_min_max_Panel1.setOpaque(false);
 
         closeBtn1.setBackground(new java.awt.Color(255, 95, 90));
@@ -3050,7 +3095,7 @@ public final class Application extends javax.swing.JFrame {
         try{
             String value = Utilities.first_LetterUpperCase(categoryInput.getText().trim());  
             if(!value.isEmpty() && !Utilities.isValueExists(value, DbColumns.CATEGORYCOLUMNS.getValues()[1], DbTables.CATEGORYTABLE.getValue())){
-                CMT.addCategoryValue(new String[]{value, java.sql.Date.valueOf(LocalDate.now()).toString()},categoryPanel);
+                CMT.addCategoryValue(new String[]{value, java.sql.Date.valueOf(LocalDate.now()).toString()});
                 categoryInput.setText("");
                 categoryInit();
             }else if(Utilities.isValueExists(value, DbColumns.CATEGORYCOLUMNS.getValues()[1],DbTables.CATEGORYTABLE.getValue())){
@@ -3066,7 +3111,7 @@ public final class Application extends javax.swing.JFrame {
             String newVal = Utilities.first_LetterUpperCase(Utilities.getSpinnerFromTable(categoryTable));
             int getSelectedColumn = categoryTable.getSelectedColumn();
             if(!Utilities.isValueExists(newVal, DbColumns.CATEGORYCOLUMNS.getValues()[1],DbTables.CATEGORYTABLE.getValue())){
-                CMT.EditCategoryValue(newVal, getSelectedColumn, Utilities.get_RecordID(categoryTable), categoryPanel);
+                CMT.EditCategoryValue(newVal, getSelectedColumn, Utilities.get_RecordID(categoryTable));
                 categoryInit();
             }else{
                 JOptionPane.showMessageDialog(categoryPanel, "Category with this name already exists.","Category",JOptionPane.ERROR_MESSAGE);
@@ -3204,14 +3249,10 @@ public final class Application extends javax.swing.JFrame {
                 model.setValueAt(updatedQuantity, rowIndex, 3);
                 model.setValueAt(updatedSubtotal, rowIndex, 4);
                 model.setValueAt(updatedTotal, rowIndex, 5);
-                String getINV = SMT.generateInvoiceNumber();
-                invoiceTextField.setText(getINV);
             } else {
                 String formattedDiscount = (discount > 0) ? String.format("%.0f%%", discount) : "No discount";
                 Object[] rowData = {itemName, retailPrice, formattedDiscount, quantity, subtotal, total};
                 model.addRow(rowData);
-                String getINV = SMT.generateInvoiceNumber();
-                invoiceTextField.setText(getINV);
             }
 //            recieptTextArea.setText(SMT.generateReceipt(model));
             totalSpinner.setValue(0);
@@ -3251,7 +3292,8 @@ public final class Application extends javax.swing.JFrame {
                 recieptTextArea.setText("");
                 invoiceTextField.setText("");
             } else {
-                recieptTextArea.setText(SMT.generateReceipt(model));
+                String getDate = Utilities.getCurrentDate(dateCHooser);
+                recieptTextArea.setText(SMT.generateReceipt(model,getDate));
             }    
         } else {
             JOptionPane.showMessageDialog(this, "No cell is being selected.","Sales",JOptionPane.ERROR_MESSAGE);
@@ -3461,17 +3503,28 @@ public final class Application extends javax.swing.JFrame {
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
         DefaultTableModel model = (DefaultTableModel) salesTable2.getModel();
         
-        recieptTextArea.setText(SMT.generateReceipt(model));
+        String getINV = SMT.generateInvoiceNumber();
+        invoiceTextField.setText(getINV); 
+        
+        String getDate = Utilities.getCurrentDate(dateCHooser);
+        Object dateRec = Utilities.get_AddedDate(dateCHooser);
+        recieptTextArea.setText(SMT.generateReceipt(model,getDate));
         
         for (int i = 0; i < model.getRowCount(); i++) {
-            for (int j = 0; j < model.getColumnCount(); j++) {
-                Object value = model.getValueAt(i, j);
-                System.out.print(value + "\t");
-            }
+            
             IMT.reduceProductQuantity(model.getValueAt(i, 3), model.getValueAt(i, 0));
             RMT.recordSold(Integer.parseInt(model.getValueAt(i, 3).toString()));
+            
+            Object item = model.getValueAt(i, 0);
+            Object discountPercent = Utilities.convertPercentageToNumber(model.getValueAt(i, 2).toString());
+            Object quantity = model.getValueAt(i, 3);
+            Object subtotal = model.getValueAt(i, 4);
+            Object total = model.getValueAt(i, 5);
+            
+            RMT.recordPurchase(getINV, item, discountPercent,quantity,subtotal,total,dateRec);
             System.out.println();
         }
+        
         inventoryTable.setModel(IMT.DisplayInventoryData());
         String get_val = (String) salesCategoryComboBox.getSelectedItem(); 
         
@@ -3527,8 +3580,8 @@ public final class Application extends javax.swing.JFrame {
     private void imageAvatar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageAvatar1MouseClicked
         String get_id = AppManagement.getCurrentUser(this);
         String get_fname = UMT.getFName(get_id);
-        
-        ProfileHandler profileHandler = new ProfileHandler(imageAvatar1.getIcon(),get_id);
+        String get_image = UMT.getImagePath(get_id);
+        ProfileHandler profileHandler = new ProfileHandler(imageAvatar1.getIcon(),get_id,get_image);
         profileHandler.setVisible(true);
  
         addWindowListener(new WindowAdapter() {
@@ -3543,8 +3596,12 @@ public final class Application extends javax.swing.JFrame {
         profileHandler.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                imageAvatar1.repaint();  
-                imageAvatar1.revalidate();
+                Icon get_icon = profileHandler.returnImageIcon();
+                System.out.println(get_icon);
+                if(get_icon != null){
+                    imageAvatar1.setIcon(get_icon);
+                    imageAvatar1.repaint();
+                }
             }
         });
     }//GEN-LAST:event_imageAvatar1MouseClicked
@@ -3604,6 +3661,17 @@ public final class Application extends javax.swing.JFrame {
          
     }//GEN-LAST:event_titleLabelMouseClicked
 
+    private void testBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testBtn1ActionPerformed
+        
+    }//GEN-LAST:event_testBtn1ActionPerformed
+
+    private void printBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtnActionPerformed
+        double x = RMT.getTotalSalesToday();
+        double y = RMT.getTotalSales();
+        System.out.println("Today: "+x);
+        System.out.println("Old"+y);
+    }//GEN-LAST:event_printBtnActionPerformed
+
     public static void switchPanel(JLayeredPane layered, JPanel panel){
         layered.removeAll();
         layered.add(panel);
@@ -3618,10 +3686,7 @@ public final class Application extends javax.swing.JFrame {
                 backPanel.setBackground(Helper.colors[5]);
                 switchPanel(layered, panel);
                 backPanel.repaint();      
-                totalProductsLabel.setText(RMT.countProducts()+"");
-                soldOldLabel.setText(RMT.getOldSold()+"");
-                soldTotayLabel.setText(RMT.getSoldToday()+"");
-                outStockLabel.setText(RMT.getOutOfStocks()+"");
+                recordInit();
             }
             
             @Override
@@ -3836,6 +3901,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel dashboardLabel;
     private javax.swing.JLabel dashboardLabel1;
     private customComponents.PanelRound dashboardPanel;
+    private com.toedter.calendar.JDateChooser dateCHooser;
     private javax.swing.JButton demoteBtn;
     private javax.swing.JTextField descriptionTextField;
     private javax.swing.JSpinner discountSpinner;
@@ -3869,13 +3935,9 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JTable inventoryTable;
     private javax.swing.JTextField invoiceTextField;
     private javax.swing.JTextField itemNameTextField;
-    private javax.swing.JButton jButton10;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -3943,6 +4005,7 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound panelRound18;
     private customComponents.PanelRound panelRound19;
     private customComponents.PanelRound panelRound2;
+    private customComponents.PanelRound panelRound20;
     private customComponents.PanelRound panelRound3;
     private customComponents.PanelRound panelRound4;
     private customComponents.PanelRound panelRound5;
@@ -3957,6 +4020,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel priceListLabel1;
     private customComponents.PanelRound priceListPanel;
     private javax.swing.JSpinner priceSpinner;
+    private javax.swing.JButton printBtn;
     private javax.swing.JButton promoteBtn;
     private javax.swing.JSpinner quantitySpinner;
     private javax.swing.JTextField receivedTextField;
@@ -3985,9 +4049,12 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel soldOldLabel;
     private javax.swing.JLabel soldTotayLabel;
     private javax.swing.JCheckBox termServiceCheckBox;
+    private javax.swing.JButton testBtn1;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel titleLabel1;
+    private javax.swing.JLabel todaysalesLabel;
     private javax.swing.JLabel totalProductsLabel;
+    private javax.swing.JLabel totalSalesLabel;
     private javax.swing.JSpinner totalSpinner;
     private javax.swing.JLabel uploadImageLabel;
     private customComponents.PanelRound uploadPanel1;

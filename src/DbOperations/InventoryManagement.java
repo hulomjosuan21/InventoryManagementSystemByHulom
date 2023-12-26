@@ -32,7 +32,7 @@ public class InventoryManagement extends DbConnection{
 
             result.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, "Error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return model;
     }   
@@ -54,7 +54,7 @@ public class InventoryManagement extends DbConnection{
             prepare.executeUpdate();
             prepare.close();
         } catch(SQLException e) {
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, "Error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -69,8 +69,7 @@ public class InventoryManagement extends DbConnection{
             prepare.executeUpdate();
             prepare.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(component, "Error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -84,7 +83,7 @@ public class InventoryManagement extends DbConnection{
             prepare.executeUpdate();
             prepare.close();
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, "Error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -112,7 +111,7 @@ public class InventoryManagement extends DbConnection{
             result.close();
             prepare.close();
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(component, e.getMessage(), e.getSQLState(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, "Error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }        
     }
     
