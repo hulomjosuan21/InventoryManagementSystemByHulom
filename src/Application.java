@@ -3,6 +3,7 @@ import assets.*;
 import customComponents.*;
 import com.formdev.flatlaf.IntelliJTheme;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -32,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Date;
 import javax.swing.Icon;
+import javax.swing.JTable;
 
 //@author Josuan
 public final class Application extends javax.swing.JFrame {
@@ -94,7 +96,7 @@ public final class Application extends javax.swing.JFrame {
     
     public void inventoryInit(){
         inventoryTable.setModel(IMT.DisplayInventoryData());
-       
+        inventoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         inventoryTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()) {
             @Override
             public boolean isCellEditable(EventObject e) {
@@ -131,11 +133,12 @@ public final class Application extends javax.swing.JFrame {
     
     public void recordInit(){
         totalProductsLabel.setText(RMT.countProducts()+"");
-        soldOldLabel.setText(RMT.getOldSold()+"");
-        soldTotayLabel.setText(RMT.getSoldToday()+"");
+        soldOldLabel.setText(RMT.getProductSold()+"");
+        soldTotayLabel.setText(RMT.getProductSoldToday()+"");
         outStockLabel.setText(RMT.getOutOfStocks()+"");
         todaysalesLabel.setText(Helper.currency+" "+RMT.getTotalSalesToday());
-        totalSalesLabel.setText(Helper.currency+" "+RMT.getTotalSales());        
+        totalSalesLabel.setText(Helper.currency+" "+RMT.getTotalSales());      
+        inventoryTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(CMT.AddElementToComboBox())));
     }
     
     public void userInit(){
@@ -149,7 +152,7 @@ public final class Application extends javax.swing.JFrame {
         
         ImageManagement.setImageToAvatar(imageAvatar1, get_image);
         usernameLabel.setText(get_username);
-        fullnameLabel.setText(get_fullName);
+        fullnameLabel.setText(Utilities.capitalizeEachWord(get_fullName));
         String get_gender = UMT.getGender(get_id);
         
         switch (get_usertype) {
@@ -157,18 +160,24 @@ public final class Application extends javax.swing.JFrame {
                 switchPanel(menuLayeredPane,menuPanel1);
                 adminSettingsLabel.setEnabled(true);
                 adminSettingsLabel.setVisible(true);
+                ivnLabel.setVisible(true);
+                invoiceTextField.setVisible(true);
                 break;
             case 1:
                 switchPanel(menuLayeredPane,menuPanel2);
                 adminSettingsLabel.setEnabled(false);
                 adminSettingsLabel.setVisible(false);
                 panelRound19.setVisible(false);
+                ivnLabel.setVisible(false);
+                invoiceTextField.setVisible(false);
                 break;
             default:
                 switchPanel(menuLayeredPane,menuPanel2);
                 adminSettingsLabel.setEnabled(false);
                 adminSettingsLabel.setVisible(false);   
                 panelRound19.setVisible(false);
+                ivnLabel.setVisible(false);
+                invoiceTextField.setVisible(false);
                 break;
         }
         try{          
@@ -303,8 +312,11 @@ public final class Application extends javax.swing.JFrame {
         addCartBtn = new javax.swing.JButton();
         removeCartBtn = new javax.swing.JButton();
         invoiceTextField = new javax.swing.JTextField();
-        jLabel31 = new javax.swing.JLabel();
+        ivnLabel = new javax.swing.JLabel();
         returnItemPanel = new customComponents.PanelRound();
+        panelRound21 = new customComponents.PanelRound();
+        jLabel40 = new javax.swing.JLabel();
+        itemNameTextField1 = new javax.swing.JTextField();
         priceListPanel = new customComponents.PanelRound();
         reportPanel = new customComponents.PanelRound();
         settingsPanel = new customComponents.PanelRound();
@@ -349,6 +361,8 @@ public final class Application extends javax.swing.JFrame {
         logoutLabel1 = new javax.swing.JLabel();
         usersBack2 = new customComponents.PanelRound();
         usersLabel2 = new javax.swing.JLabel();
+        settingsBack2 = new customComponents.PanelRound();
+        settingsLabel2 = new javax.swing.JLabel();
         adminPanel = new customComponents.PanelRound();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         panelRound15 = new customComponents.PanelRound();
@@ -1038,9 +1052,15 @@ public final class Application extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        inventoryTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         inventoryTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 inventoryTableMouseClicked(evt);
+            }
+        });
+        inventoryTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                inventoryTablePropertyChange(evt);
             }
         });
         jScrollPane1.setViewportView(inventoryTable);
@@ -1381,6 +1401,11 @@ public final class Application extends javax.swing.JFrame {
         payBtn.setText("PAY");
         payBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
         payBtn.setEnabled(false);
+        payBtn.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                payBtnStateChanged(evt);
+            }
+        });
         payBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 payBtnActionPerformed(evt);
@@ -1390,6 +1415,12 @@ public final class Application extends javax.swing.JFrame {
         printBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print.png"))); // NOI18N
         printBtn.setText("PRINT");
         printBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        printBtn.setEnabled(false);
+        printBtn.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                printBtnStateChanged(evt);
+            }
+        });
         printBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printBtnActionPerformed(evt);
@@ -1718,9 +1749,9 @@ public final class Application extends javax.swing.JFrame {
         invoiceTextField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         invoiceTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
 
-        jLabel31.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel31.setText("Invoice Number");
+        ivnLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        ivnLabel.setForeground(new java.awt.Color(102, 102, 102));
+        ivnLabel.setText("Invoice Number");
 
         javax.swing.GroupLayout salesPanelLayout = new javax.swing.GroupLayout(salesPanel);
         salesPanel.setLayout(salesPanelLayout);
@@ -1744,7 +1775,7 @@ public final class Application extends javax.swing.JFrame {
                 .addGroup(salesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelRound10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(salesPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel31)
+                        .addComponent(ivnLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(invoiceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)))
@@ -1758,7 +1789,7 @@ public final class Application extends javax.swing.JFrame {
                         .addGap(21, 21, 21)
                         .addGroup(salesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(invoiceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel31))
+                            .addComponent(ivnLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelRound10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(salesPanelLayout.createSequentialGroup()
@@ -1780,15 +1811,58 @@ public final class Application extends javax.swing.JFrame {
         returnItemPanel.setBackground(new java.awt.Color(224, 231, 255));
         returnItemPanel.setRoundTopLeft(50);
 
+        panelRound21.setBackground(new java.awt.Color(165, 180, 252));
+        panelRound21.setRoundBottomLeft(25);
+        panelRound21.setRoundBottomRight(25);
+        panelRound21.setRoundTopLeft(50);
+        panelRound21.setRoundTopRight(25);
+
+        jLabel40.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jLabel40.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel40.setText("Invoice Number");
+
+        itemNameTextField1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        itemNameTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+
+        javax.swing.GroupLayout panelRound21Layout = new javax.swing.GroupLayout(panelRound21);
+        panelRound21.setLayout(panelRound21Layout);
+        panelRound21Layout.setHorizontalGroup(
+            panelRound21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound21Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(panelRound21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelRound21Layout.createSequentialGroup()
+                        .addComponent(itemNameTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addGap(755, 755, 755))
+                    .addGroup(panelRound21Layout.createSequentialGroup()
+                        .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        panelRound21Layout.setVerticalGroup(
+            panelRound21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound21Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel40)
+                .addGap(7, 7, 7)
+                .addComponent(itemNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout returnItemPanelLayout = new javax.swing.GroupLayout(returnItemPanel);
         returnItemPanel.setLayout(returnItemPanelLayout);
         returnItemPanelLayout.setHorizontalGroup(
             returnItemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 920, Short.MAX_VALUE)
+            .addGroup(returnItemPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelRound21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         returnItemPanelLayout.setVerticalGroup(
             returnItemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 555, Short.MAX_VALUE)
+            .addGroup(returnItemPanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(panelRound21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(429, Short.MAX_VALUE))
         );
 
         contentLayeredPane.add(returnItemPanel, "card2");
@@ -2434,6 +2508,34 @@ public final class Application extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        settingsBack2.setBackground(new java.awt.Color(79, 70, 229));
+        settingsBack2.setRoundBottomLeft(25);
+        settingsBack2.setRoundBottomRight(25);
+        settingsBack2.setRoundTopLeft(25);
+        settingsBack2.setRoundTopRight(25);
+
+        settingsLabel2.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        settingsLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        settingsLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/settings.png"))); // NOI18N
+        settingsLabel2.setText("Settings");
+
+        javax.swing.GroupLayout settingsBack2Layout = new javax.swing.GroupLayout(settingsBack2);
+        settingsBack2.setLayout(settingsBack2Layout);
+        settingsBack2Layout.setHorizontalGroup(
+            settingsBack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsBack2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(settingsLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        settingsBack2Layout.setVerticalGroup(
+            settingsBack2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsBack2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(settingsLabel2)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout menuPanel2Layout = new javax.swing.GroupLayout(menuPanel2);
         menuPanel2.setLayout(menuPanel2Layout);
         menuPanel2Layout.setHorizontalGroup(
@@ -2451,7 +2553,8 @@ public final class Application extends javax.swing.JFrame {
                     .addGroup(menuPanel2Layout.createSequentialGroup()
                         .addGroup(menuPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(dashboardBack1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(usersBack2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(usersBack2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(settingsBack2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -2469,8 +2572,10 @@ public final class Application extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(priceListBack1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(settingsBack2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(logoutBack1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(257, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         menuLayeredPane.add(menuPanel2, "card2");
@@ -2572,7 +2677,7 @@ public final class Application extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(demoteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(adminDeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(adminDeleteBtn)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE))
                 .addContainerGap())
@@ -3028,58 +3133,95 @@ public final class Application extends javax.swing.JFrame {
     }//GEN-LAST:event_inventoryAddBtnActionPerformed
 
     private void inventoryEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventoryEditBtnActionPerformed
-        int getSelectedRow = inventoryTable.getSelectedRow();
         int getSelectedColumn = inventoryTable.getSelectedColumn();
+        int getSelectedRow = inventoryTable.getSelectedRow();
+        
         try{
             if(getSelectedRow != -1 && getSelectedColumn != -1){
-                Object oldValue = inventoryTable.getValueAt(getSelectedRow, getSelectedColumn);
-                int oldVal = 0;
-                int newVal = 0;
-                if(getSelectedColumn == 4){
-                    oldVal = Integer.parseInt(oldValue.toString());
+                Object getNewVal = null;
+                Object oldVal = inventoryTable.getValueAt(getSelectedRow, getSelectedColumn);
+                switch(getSelectedColumn){
+                    case 1:
+                        getNewVal = Utilities.getComboxFromTable(inventoryTable);
+                        break;
+                    case 2:
+                        getNewVal = Utilities.getSpinnerFromTable(inventoryTable);//
+                        break;
+                    case 3:
+                        getNewVal = Utilities.getSpinnerFromTable(inventoryTable);//
+                        break;      
+                    case 4:
+                        getNewVal = Utilities.getSpinnerFromTable(inventoryTable);
+                        break;
+                    case 5:
+                        getNewVal = Utilities.getSpinnerFromTable(inventoryTable);
+                        break;                        
+                    default:
+                        break;
                 }
-
-                Object newValue = null;
-
-                if (getSelectedColumn != 1 || newValue != null) {
-                    if(getSelectedColumn == 2 || getSelectedColumn == 3){
-                        newValue = Utilities.first_LetterUpperCase(Utilities.getSpinnerFromTable(inventoryTable));
-                    } else {
-                        newValue = Utilities.getSpinnerFromTable(inventoryTable);
-                    }
-                } else {
-                    newValue = Utilities.getComboxFromTable(inventoryTable);
+                
+                if(getSelectedColumn == 2 || getSelectedColumn == 3){
+                    try{
+                        getNewVal = Utilities.first_LetterUpperCase(getNewVal.toString());
+                    }catch(NullPointerException e){}
                 }
-
-                if(getSelectedColumn == 4){
-                    newVal = Integer.parseInt(newValue.toString());
-                }
-
-                if(newValue != null && !oldValue.equals(newVal)) {
-                    IMT.EditInventoryValue(newValue, getSelectedColumn, Utilities.get_RecordID(inventoryTable));
-                } else {
-                    if(newValue == null) {
-                        JOptionPane.showMessageDialog(inventoryPanel, "New value cannot be null!", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-
-                if(getSelectedColumn == 4){
-                    if(newVal < oldVal){
-                        int r_v = oldVal - newVal;
-                        RMT.recordSold(r_v);
-                    }
+                
+                if(getNewVal != null){
+                    IMT.EditInventoryValue(getNewVal, getSelectedColumn, Utilities.get_RecordID(inventoryTable));
+                    inventoryInit();
                 }
             }else{
                 JOptionPane.showMessageDialog(this, "No cell is being selected.", "Inventory", JOptionPane.INFORMATION_MESSAGE);
             }
-            inventoryInit();
-            String get_val = (String) salesCategoryComboBox.getSelectedItem(); 
-            SMT.loadInventoryData(salesTable1, get_val);
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, "An unexpected error occurred. Please try again.", "Inventory", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_inventoryEditBtnActionPerformed
 
+//        int getSelectedRow = inventoryTable.getSelectedRow();
+//        int getSelectedColumn = inventoryTable.getSelectedColumn();
+//        try{
+//            if(getSelectedRow != -1 && getSelectedColumn != -1){
+//                Object oldValue = inventoryTable.getValueAt(getSelectedRow, getSelectedColumn);
+//                int oldVal = 0;
+//                int newVal = 0;
+//                if(getSelectedColumn == 4){
+//                    oldVal = Integer.parseInt(oldValue.toString());
+//                }
+//
+//                Object newValue = null;
+//
+//                if (getSelectedColumn != 1 || newValue != null) {
+//                    if(getSelectedColumn == 2 || getSelectedColumn == 3){
+//                        newValue = Utilities.first_LetterUpperCase(Utilities.getSpinnerFromTable(inventoryTable));
+//                    } else {
+//                        newValue = Utilities.getSpinnerFromTable(inventoryTable);
+//                    }
+//                } else {
+//                    newValue = Utilities.getComboxFromTable(inventoryTable);
+//                }
+//
+//                if(getSelectedColumn == 4){
+//                    newVal = Integer.parseInt(newValue.toString());
+//                }
+//
+//                if(newValue != null && !oldValue.equals(newVal)) {
+//                    IMT.EditInventoryValue(newValue, getSelectedColumn, Utilities.get_RecordID(inventoryTable));
+//                } else {
+//                    if(newValue == null) {
+//                        JOptionPane.showMessageDialog(inventoryPanel, "New value cannot be null!", "Error", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                }
+//            }else{
+//                JOptionPane.showMessageDialog(this, "No cell is being selected.", "Inventory", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//            inventoryInit();
+//            String get_val = (String) salesCategoryComboBox.getSelectedItem(); 
+//            SMT.loadInventoryData(salesTable1, get_val);
+//        }catch(Exception e){
+//            JOptionPane.showMessageDialog(this, "An unexpected error occurred. Please try again.", "Inventory", JOptionPane.ERROR_MESSAGE);
+//        }
+    
     private void inventoryDeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventoryDeleteBtnActionPerformed
         if(Utilities.has_NoZeroVal(Utilities.get_RecordIDs(inventoryTable)) && inventoryTable.getSelectedRow() != -1){
             for(Object i : Utilities.get_RecordIDs(inventoryTable)){
@@ -3266,8 +3408,8 @@ public final class Application extends javax.swing.JFrame {
             for (int i = 0; i < model.getRowCount(); i++) {
                 getTotal += Double.parseDouble((model.getValueAt(i, 5)).toString());
             }
-            getTotalTextField.setText(getTotal+"");
-            System.out.println(getTotal);
+            String formattedTotal = String.format("%.2f", getTotal);
+            getTotalTextField.setText(formattedTotal);
             
 //            double get_total = Double.parseDouble(getTotalTextField.getText());
             if (Double.parseDouble(getTotalTextField.getText()) < 1) {
@@ -3275,6 +3417,24 @@ public final class Application extends javax.swing.JFrame {
             } else {
                 receivedTextField.setEnabled(true);
             }
+            
+            try{
+                String receivedTextVal = receivedTextField.getText();
+            
+                double receivedVal = Double.parseDouble(receivedTextVal);
+                if (!receivedTextVal.isEmpty()) {
+                    if (receivedVal < getTotal) {
+                        payBtn.setEnabled(false);
+                        printBtn.setEnabled(false);
+                    } else {
+                        payBtn.setEnabled(true);
+                        printBtn.setEnabled(true); 
+                    }
+                } else {
+                    payBtn.setEnabled(false);
+                    printBtn.setEnabled(false);
+                }
+            }catch(NumberFormatException e){}
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Invalid input format. Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -3284,19 +3444,41 @@ public final class Application extends javax.swing.JFrame {
     private void removeCartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeCartBtnActionPerformed
         DefaultTableModel model = (DefaultTableModel) salesTable2.getModel();
         int selectedRow = salesTable2.getSelectedRow();
-
+        String oldTotalVal = getTotalTextField.getText();
+        String receivedTextVal = receivedTextField.getText();
         if (selectedRow >= 0) {
+            double receivedVal = Double.parseDouble(receivedTextVal);
+            double curTotalVal = Double.parseDouble(oldTotalVal);
+            double minusVal = Double.parseDouble(model.getValueAt(selectedRow, 5).toString());
+
             model.removeRow(selectedRow);
-            recieptTextArea.setText("");
+
+            curTotalVal -= minusVal;
+            String formattedTotal = String.format("%.2f", curTotalVal);
+
+            getTotalTextField.setText(formattedTotal);
+
             if (model.getRowCount() == 0) {
                 recieptTextArea.setText("");
                 invoiceTextField.setText("");
+                payBtn.setEnabled(false);
+                printBtn.setEnabled(false);
+            }
+            
+            if (!receivedTextVal.isEmpty()) {
+                if (receivedVal < curTotalVal || curTotalVal == 0) {
+                    payBtn.setEnabled(false);
+                    printBtn.setEnabled(false);
+                } else {
+                    payBtn.setEnabled(true);
+                    printBtn.setEnabled(true);
+                }
             } else {
-                String getDate = Utilities.getCurrentDate(dateCHooser);
-                recieptTextArea.setText(SMT.generateReceipt(model,getDate));
-            }    
+                payBtn.setEnabled(false);
+                printBtn.setEnabled(false);
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "No cell is being selected.","Sales",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No cell is being selected.", "Sales", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_removeCartBtnActionPerformed
 
@@ -3345,7 +3527,9 @@ public final class Application extends javax.swing.JFrame {
     private void adminDeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminDeleteBtnActionPerformed
         if(Utilities.has_NoZeroVal(Utilities.get_RecordIDs(usersTable)) && usersTable.getSelectedRow() != -1){
             for(Object i : Utilities.get_RecordIDs(usersTable)){
-                UMT.DeleteUser(i);
+                //UMT.DeleteUser(i);
+                //ImageManagement.deleteImage();
+                System.out.println(UMT.getImagePath(i.toString()));
             }
             usersTable.setModel(UMT.DisplayUserData());
         }else{
@@ -3405,6 +3589,13 @@ public final class Application extends javax.swing.JFrame {
                 }
             }
             usersTable.setModel(UMT.DisplayUserData());
+            getFNameTextField.setText("");
+            getLNameTextField.setText("");
+            getUNameTextField.setText("");
+            getPasswordPasswordField.setText("");
+            getConfirmPasswordPasswordField.setText("");
+            addUserBtn.setEnabled(false);
+            getBirthDateDateChooser.setDate(null);
         }
     }//GEN-LAST:event_addUserBtnActionPerformed
 
@@ -3427,7 +3618,7 @@ public final class Application extends javax.swing.JFrame {
     private void genderLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genderLabelMouseClicked
         JComboBox<String> comboBox = new JComboBox<>(Helper.listOfGender);
         int optionChosen = JOptionPane.showOptionDialog(usersPanel,comboBox,"Select an option",JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE,new ImageIcon("src/icons/nogender.png"),null,null);
+            JOptionPane.QUESTION_MESSAGE,new ImageIcon("src/icons/nogender_dark.png"),null,null);
         
         String get_currentUserId = AppManagement.getCurrentUser(this);
         
@@ -3513,7 +3704,6 @@ public final class Application extends javax.swing.JFrame {
         for (int i = 0; i < model.getRowCount(); i++) {
             
             IMT.reduceProductQuantity(model.getValueAt(i, 3), model.getValueAt(i, 0));
-            RMT.recordSold(Integer.parseInt(model.getValueAt(i, 3).toString()));
             
             Object item = model.getValueAt(i, 0);
             Object discountPercent = Utilities.convertPercentageToNumber(model.getValueAt(i, 2).toString());
@@ -3535,13 +3725,15 @@ public final class Application extends javax.swing.JFrame {
         
         double balance = received - total;
 
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         String formattedBalance = "₱ " + decimalFormat.format(balance);
 
         getBalanceTextField.setText(formattedBalance);
     }//GEN-LAST:event_payBtnActionPerformed
 
     private void inventoryTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryTableMouseClicked
+        
+        
         inventoryTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()) {
             @Override
             public boolean isCellEditable(EventObject e) {
@@ -3576,34 +3768,55 @@ public final class Application extends javax.swing.JFrame {
             getConfirmPasswordPasswordField.setEchoChar('*');
         }
     }//GEN-LAST:event_showPasswordCheckBoxActionPerformed
-
+    private ProfileHandler profileHandler;
+    int countState = 0;
     private void imageAvatar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageAvatar1MouseClicked
-        String get_id = AppManagement.getCurrentUser(this);
-        String get_fname = UMT.getFName(get_id);
-        String get_image = UMT.getImagePath(get_id);
-        ProfileHandler profileHandler = new ProfileHandler(imageAvatar1.getIcon(),get_id,get_image);
-        profileHandler.setVisible(true);
- 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                if (profileHandler != null && profileHandler.isVisible()) {
-                    profileHandler.dispose();
-                }
-            }
-        });
+        if(countState < 1){
+            String get_id = AppManagement.getCurrentUser(this);
+        
+            String get_fname = UMT.getFName(get_id);
+            String get_image = UMT.getImagePath(get_id);
 
-        profileHandler.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                Icon get_icon = profileHandler.returnImageIcon();
-                System.out.println(get_icon);
-                if(get_icon != null){
-                    imageAvatar1.setIcon(get_icon);
-                    imageAvatar1.repaint();
+            if (profileHandler == null) {
+                profileHandler = new ProfileHandler(imageAvatar1.getIcon(), get_id, get_image);
+                profileHandler.setVisible(true);
+
+                profileHandler.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        Icon get_icon = profileHandler.returnIcon();
+                        if (get_icon != null) {
+                            imageAvatar1.setIcon(get_icon);
+                            imageAvatar1.repaint();
+                        }
+                        if(profileHandler.changedState()){
+                            countState++;
+                        }
+                        profileHandler = null; 
+                    }
+                });
+            } else {
+                if (profileHandler.getState() == Frame.ICONIFIED) {
+                    profileHandler.setState(Frame.NORMAL); 
+                } else {
+                    profileHandler.setState(Frame.ICONIFIED); 
                 }
             }
-        });
+        }else{
+                Object[] options = {"View Image", "Do Not View Image"};
+                int choice = JOptionPane.showOptionDialog(null,
+                            "Close the Application to Change Profile Again",
+                            "Profile",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    ImageManagement.openImage(imageAvatar1.getIcon());
+                }
+        }
     }//GEN-LAST:event_imageAvatar1MouseClicked
 
     private void imageAvatar2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageAvatar2MouseEntered
@@ -3666,11 +3879,24 @@ public final class Application extends javax.swing.JFrame {
     }//GEN-LAST:event_testBtn1ActionPerformed
 
     private void printBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtnActionPerformed
-        double x = RMT.getTotalSalesToday();
-        double y = RMT.getTotalSales();
-        System.out.println("Today: "+x);
-        System.out.println("Old"+y);
+        System.out.println(recieptTextArea.getText());
     }//GEN-LAST:event_printBtnActionPerformed
+
+    private void printBtnStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_printBtnStateChanged
+
+    }//GEN-LAST:event_printBtnStateChanged
+
+    private void payBtnStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_payBtnStateChanged
+        if(payBtn.isEnabled()) {
+            printBtn.setEnabled(true);
+        } else {
+            printBtn.setEnabled(false);
+        }
+    }//GEN-LAST:event_payBtnStateChanged
+
+    private void inventoryTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_inventoryTablePropertyChange
+        
+    }//GEN-LAST:event_inventoryTablePropertyChange
 
     public static void switchPanel(JLayeredPane layered, JPanel panel){
         layered.removeAll();
@@ -3812,6 +4038,7 @@ public final class Application extends javax.swing.JFrame {
         labelActions(salesBack1, salesLabel1, contentLayeredPane, salesPanel);
         labelActions(returnItemBack1, returnItemLabel1, contentLayeredPane, returnItemPanel);
         labelActions(priceListBack1, priceListLabel1, contentLayeredPane, priceListPanel);
+        labelActions(settingsBack2, settingsLabel2, contentLayeredPane, settingsPanel);
         logoutLabelActions(logoutBack1, logoutLabel1);       
         
         labelActionNoBack(adminSettingsLabel,new Color[]{Helper.fontColors[0],Helper.colors[3],Helper.fontColors[0]});
@@ -3935,6 +4162,8 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JTable inventoryTable;
     private javax.swing.JTextField invoiceTextField;
     private javax.swing.JTextField itemNameTextField;
+    private javax.swing.JTextField itemNameTextField1;
+    private javax.swing.JLabel ivnLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -3957,7 +4186,6 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
@@ -3967,6 +4195,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -4006,6 +4235,7 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound panelRound19;
     private customComponents.PanelRound panelRound2;
     private customComponents.PanelRound panelRound20;
+    private customComponents.PanelRound panelRound21;
     private customComponents.PanelRound panelRound3;
     private customComponents.PanelRound panelRound4;
     private customComponents.PanelRound panelRound5;
@@ -4043,7 +4273,11 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JTable salesTable1;
     private javax.swing.JTable salesTable2;
     private customComponents.PanelRound settingsBack;
+    private customComponents.PanelRound settingsBack1;
+    private customComponents.PanelRound settingsBack2;
     private javax.swing.JLabel settingsLabel;
+    private javax.swing.JLabel settingsLabel1;
+    private javax.swing.JLabel settingsLabel2;
     private customComponents.PanelRound settingsPanel;
     private javax.swing.JCheckBox showPasswordCheckBox;
     private javax.swing.JLabel soldOldLabel;

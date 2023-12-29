@@ -3,6 +3,7 @@ package assets;
 import DbOperations.DbConnection;
 import DbOperations.UserManagement;
 import com.formdev.flatlaf.IntelliJTheme;
+import customComponents.ImageAvatar;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Graphics2D;
@@ -30,6 +31,7 @@ public final class ProfileHandler extends javax.swing.JFrame {
     private final File oldImage;
     private Icon returnIcon;
     private final String oldImageName;
+    private boolean changed = false;
     public ProfileHandler(Icon profileIcon, String userID, String oldImageName) {
         initComponents();
         
@@ -129,6 +131,12 @@ public final class ProfileHandler extends javax.swing.JFrame {
         changeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 changeLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                changeLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                changeLabelMouseExited(evt);
             }
         });
 
@@ -239,9 +247,13 @@ public final class ProfileHandler extends javax.swing.JFrame {
         File fromDropFile = ImageManagement.getDroppedFile(); 
         File newImage = getNewImage(fromDropFile,fromLabelImage);
         if (newImage != null) {
-            ImageManagement.replaceImageFile(oldImage, newImage);
-            imageAvatar1.setIcon(new ImageIcon("src/images/"+oldImageName));
-            
+            File replacedFile = ImageManagement.replaceImageFile(oldImage, newImage);
+            if (replacedFile != null && replacedFile.exists()) {
+                ImageIcon newIcon = new ImageIcon(replacedFile.getAbsolutePath());
+                imageAvatar1.setIcon(newIcon);
+                returnIcon = imageAvatar1.getIcon();
+                changed = true;
+            }    
         }
     }//GEN-LAST:event_ChangeBtnActionPerformed
 
@@ -254,16 +266,32 @@ public final class ProfileHandler extends javax.swing.JFrame {
     }//GEN-LAST:event_imageAvatar2MouseClicked
 
     private void changeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeLabelMouseClicked
-        this.fromLabelImage = ImageManagement.getImage(this);
-        imageAvatar2.setIcon(new ImageIcon(fromLabelImage.toString()));
+        changeLabel.setForeground(Helper.colors[7]);
+        try{
+            this.fromLabelImage = ImageManagement.getImage(this);
         
-        imageAvatar2.repaint();
+            imageAvatar2.setIcon(new ImageIcon(fromLabelImage.toString()));
+
+            imageAvatar2.repaint();
+        }catch(NullPointerException e){
+            
+        }
     }//GEN-LAST:event_changeLabelMouseClicked
+
+    private void changeLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeLabelMouseEntered
+        changeLabel.setForeground(Helper.colors[5]);
+    }//GEN-LAST:event_changeLabelMouseEntered
+
+    private void changeLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeLabelMouseExited
+        changeLabel.setForeground(Helper.colors[1]);
+    }//GEN-LAST:event_changeLabelMouseExited
  
-    public Icon returnImageIcon(){
-        return imageAvatar1.getIcon();
+    public Icon returnIcon() {
+        return returnIcon;
     }
-    
+    public boolean changedState() {
+        return changed;
+    }
     public void backLabelActions(JLabel label,String[] iconName){
         label.addMouseListener(new MouseAdapter(){
             @Override

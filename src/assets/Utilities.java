@@ -28,7 +28,21 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.text.DefaultFormatter;
 
 public class Utilities extends DbOperations.DbConnection{
+    
+    public static String capitalizeEachWord(String fullName) {
+        String[] words = fullName.split("\\s+"); 
 
+        StringBuilder capitalizedFullName = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                String capitalizedWord = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+                capitalizedFullName.append(capitalizedWord).append(" ");
+            }
+        }
+        return capitalizedFullName.toString().trim(); 
+    }
+    
     public static String getCurrentDate(JDateChooser g_date) {
         if (g_date == null || g_date.getDate() == null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");

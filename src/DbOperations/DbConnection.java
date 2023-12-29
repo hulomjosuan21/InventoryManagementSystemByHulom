@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DbConnection {
-    private final static String url = "jdbc:mysql://localhost:3306/imsdb?zeroDateTimeBehavior=CONVERT_TO_NULL";
+    private final static String url = "jdbc:mysql://localhost:3306/mydb?zeroDateTimeBehavior=CONVERT_TO_NULL";
     private final static String username = "root";
     private final static String password = "";
     

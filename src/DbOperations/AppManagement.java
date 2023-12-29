@@ -12,7 +12,7 @@ public class AppManagement extends DbConnection{
     }  
     
     public static String getCurrentUser(Component p_c){
-        String query = "SELECT "+DbColumns.APPCOLUMNS.getValues()[2]+" FROM "+DbTables.APPTABLE.getValue()+" WHERE "
+        String query = "SELECT "+DbColumns.APPCOLUMNS.getValues()[1]+" FROM "+DbTables.APPTABLE.getValue()+" WHERE "
                 + DbColumns.APPCOLUMNS.getValues()[0] + " = 1";
         
         try{
@@ -20,7 +20,7 @@ public class AppManagement extends DbConnection{
             result = prepare.executeQuery();
             
             if(result.next()){
-                return result.getString(DbColumns.APPCOLUMNS.getValues()[2]);
+                return result.getString(DbColumns.APPCOLUMNS.getValues()[1]);
             }
             
             prepare.close();
@@ -32,7 +32,7 @@ public class AppManagement extends DbConnection{
     }    
     
     public static void setCurrentUser(String _id,Component p_c){
-        String query = "UPDATE "+DbTables.APPTABLE.getValue()+" SET "+DbColumns.APPCOLUMNS.getValues()[2]+" = ? WHERE "+DbColumns.APPCOLUMNS.getValues()[0]+" = 1";
+        String query = "UPDATE "+DbTables.APPTABLE.getValue()+" SET "+DbColumns.APPCOLUMNS.getValues()[1]+" = ? WHERE "+DbColumns.APPCOLUMNS.getValues()[0]+" = 1";
         
         try{
             prepare = connection.prepareStatement(query);

@@ -35,7 +35,7 @@ public class CategoryManagement extends DbConnection{
 
             result.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
         return model;
     }
@@ -51,7 +51,7 @@ public class CategoryManagement extends DbConnection{
             prepare.executeUpdate();
             prepare.close();
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -67,7 +67,7 @@ public class CategoryManagement extends DbConnection{
             prepare.executeUpdate();
             prepare.close();
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -81,7 +81,7 @@ public class CategoryManagement extends DbConnection{
             prepare.executeUpdate();
             prepare.close();
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -97,7 +97,7 @@ public class CategoryManagement extends DbConnection{
             }
             result.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
         return getVal.toArray(new String[0]);
     } 
@@ -126,7 +126,7 @@ public class CategoryManagement extends DbConnection{
             result.close();
             prepare.close();
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(component, e.getMessage(), e.getSQLState(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }        
     }
 }

@@ -15,38 +15,35 @@ public class UserManagement extends DbConnection{
         this.component = component;
     }
     
-    public DefaultTableModel DisplayUserData(){
-        String query = "SELECT "+DbColumns.USERSCOLUMNS.getValues()[0]+", "+DbColumns.USERSCOLUMNS.getValues()[1]+
-                ", "+DbColumns.USERSCOLUMNS.getValues()[2]+", "+DbColumns.USERSCOLUMNS.getValues()[3]+
-                ", "+DbColumns.USERSCOLUMNS.getValues()[4]+", "+DbColumns.USERSCOLUMNS.getValues()[5]+
-                ", "+DbColumns.USERSCOLUMNS.getValues()[6]+", "+DbColumns.USERSCOLUMNS.getValues()[7]+
-                ", "+DbColumns.USERSCOLUMNS.getValues()[8]+" FROM " + DbTables.USERTABLE.getValue();
+    public DefaultTableModel DisplayUserData() {
+        String query = "SELECT " + DbColumns.USERSCOLUMNS.getValues()[0] + ", " + DbColumns.USERSCOLUMNS.getValues()[1] +
+                ", " + DbColumns.USERSCOLUMNS.getValues()[2] + ", " + DbColumns.USERSCOLUMNS.getValues()[3] +
+                ", " + DbColumns.USERSCOLUMNS.getValues()[4] + ", " + DbColumns.USERSCOLUMNS.getValues()[5] +
+                ", " + DbColumns.USERSCOLUMNS.getValues()[6] + ", " + DbColumns.USERSCOLUMNS.getValues()[7] +
+                ", " + DbColumns.USERSCOLUMNS.getValues()[8] + " FROM " + DbTables.USERTABLE.getValue();
 
         DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[]{"User ID","First Name","Last Name","Username","Password","Birth Date","Gender","User Position"});
+        model.setColumnIdentifiers(new Object[]{"User ID", "First Name", "Last Name", "Username", "Password", "Birth Date", "Gender", "Image", "User Position"});
+
         try {
             result = statement.executeQuery(query);
             metaData = result.getMetaData();
             int numberOfColumns = metaData.getColumnCount();
 
             while (result.next()) {
-                Object[] rowData = new Object[numberOfColumns - 1]; // Excluding profileImgPath
-
-                int columnIndex = 0;
-                for (int i = 1; i <= numberOfColumns; i++) {
-                    if (i != 8) {
-                        rowData[columnIndex++] = result.getObject(i);
-                    }
+                Object[] rowData = new Object[numberOfColumns];
+                for (int i = 0; i < numberOfColumns; i++) {
+                    rowData[i] = result.getObject(i + 1);
                 }
                 model.addRow(rowData);
             }
 
             result.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(component, "", "", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
         return model;
-    }   
+    }
     
     public String getUserId(String u_name,String u_pass){
         String query = "SELECT "+DbColumns.USERSCOLUMNS.getValues()[0]+" FROM "+DbTables.USERTABLE.getValue()+" WHERE "

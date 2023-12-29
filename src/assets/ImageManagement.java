@@ -90,7 +90,7 @@ public class ImageManagement {
         }
     }
     
-    public static void replaceImageFile(File oldFile, File newFile) {
+    public static File replaceImageFile(File oldFile, File newFile) {
         if (oldFile.exists()) {
             try (FileInputStream fis = new FileInputStream(newFile);
                  FileOutputStream fos = new FileOutputStream(oldFile)) {
@@ -100,14 +100,13 @@ public class ImageManagement {
                 while ((length = fis.read(buffer)) > 0) {
                     fos.write(buffer, 0, length);
                 }
-                System.out.println("Image file replaced successfully.");
 
             } catch (IOException e) {
-                System.out.println("Failed to replace image file: " + e.getMessage());
             }
         } else {
-            System.out.println("Old image file does not exist.");
         }
+
+        return oldFile;
     }
     
     public static void insertImage(File newImageFile, String newImageName) {
@@ -262,5 +261,26 @@ public class ImageManagement {
         } catch (IOException ex) {
             ex.printStackTrace();
         }   
+    }
+    
+    public static void deleteImage(String img) {
+        if (!img.equals("nullProfile.jpg")) {
+            String imagePath = "src/images/" + img;
+            File fileToDelete = new File(imagePath);
+
+            if (fileToDelete.exists()) {
+                boolean deletionStatus = fileToDelete.delete();
+
+                if (deletionStatus) {
+                    System.out.println("Image " + img + " deleted successfully.");
+                } else {
+                    System.out.println("Unable to delete image " + img);
+                }
+            } else {
+                System.out.println("Image " + img + " does not exist.");
+            }
+        } else {
+            System.out.println("Skipping deletion. Image is nullProfile.jpg.");
+        }
     }
 }

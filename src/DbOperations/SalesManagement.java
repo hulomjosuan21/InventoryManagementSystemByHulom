@@ -51,7 +51,7 @@ public class SalesManagement extends DbConnection{
             result.close();
             prepare.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(component, e.getMessage(), e.getSQLState(), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
     }
     
