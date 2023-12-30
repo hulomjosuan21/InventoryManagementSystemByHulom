@@ -15,29 +15,31 @@ public class CategoryManagement extends DbConnection{
         this.component = component;
     }
     
-    public DefaultTableModel DisplayCategoryData(){
-        String query = "SELECT * FROM " + DbTables.CATEGORYTABLE.getValue();
+    public void DisplayCategoryData(JTable table){
+        String[] columnsToDisplay = DbColumns.CATEGORYCOLUMNS.getValues();
 
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[]{"Category ID","Category Name","Date Added"});
+        String query = "SELECT " + String.join(", ", columnsToDisplay) + " FROM " + DbTables.CATEGORYTABLE.getValue();
         try {
-            result = statement.executeQuery(query);
-            metaData = result.getMetaData();
-            int numberOfColumns = metaData.getColumnCount();
+            prepare = connection.prepareStatement(query);
+
+            result = prepare.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+            model.setRowCount(0);
 
             while (result.next()) {
-                Object[] rowData = new Object[numberOfColumns];
-                for (int i = 1; i <= numberOfColumns; i++) {
-                    rowData[i - 1] = result.getObject(i);
+                Object[] row = new Object[columnsToDisplay.length];
+                for (int i = 0; i < columnsToDisplay.length; i++) {
+                    row[i] = result.getObject(columnsToDisplay[i]);
                 }
-                model.addRow(rowData);
+                model.addRow(row);
             }
 
             result.close();
+            prepare.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
-        return model;
     }
     
     public void addCategoryValue(String[] values){

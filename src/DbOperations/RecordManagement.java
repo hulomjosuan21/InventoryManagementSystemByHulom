@@ -2,9 +2,12 @@ package DbOperations;
 
 import static DbOperations.DbConnection.connection;
 import static DbOperations.DbConnection.prepare;
+import static DbOperations.DbConnection.result;
 import java.awt.Component;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class RecordManagement extends DbConnection{
     private final Component component;
@@ -64,7 +67,7 @@ public class RecordManagement extends DbConnection{
     }
     
     public double getTotalSales() {
-        String query = "SELECT SUM("+DbColumns.PURCHASEDCOLUMNS.getValues()[5]+") AS totalSales FROM "+DbTables.PURCHASEDTABLE+"";
+        String query = "SELECT SUM("+DbColumns.PURCHASEDCOLUMNS.getValues()[5]+") AS totalSales FROM "+DbTables.PURCHASEDTABLE;
         double salesVal = 0;
         try {
             prepare = connection.prepareStatement(query);
@@ -131,5 +134,60 @@ public class RecordManagement extends DbConnection{
         } catch(SQLException e) {
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }      
+    }
+    
+    public void loadPurchasedData(JTable table) {
+        String[] columnsToDisplay = {"invoiceNumber", "product", "discountPercent","quantity","subtotal", "total","purchasedDate"};
+
+        String query = "SELECT " + String.join(", ", columnsToDisplay) + " FROM " + DbTables.PURCHASEDTABLE.getValue();
+        try {
+            prepare = connection.prepareStatement(query);
+
+            result = prepare.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+            model.setRowCount(0);
+
+            while (result.next()) {
+                Object[] row = new Object[columnsToDisplay.length];
+                for (int i = 0; i < columnsToDisplay.length; i++) {
+                    row[i] = result.getObject(columnsToDisplay[i]);
+                }
+                model.addRow(row);
+            }
+
+            result.close();
+            prepare.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void searchPurchasedData(JTable table, String search){
+        String query = "SELECT * FROM "+DbTables.PURCHASEDTABLE.getValue()+" WHERE "
+                    + String.join(" LIKE ? OR ", DbColumns.PURCHASEDCOLUMNS.getValues()) + " LIKE ?";    
+        try{
+            prepare = connection.prepareStatement(query);
+            for (int i = 1; i <= DbColumns.PURCHASEDCOLUMNS.getValues().length; i++) {
+                prepare.setString(i, "%" + search + "%");
+            }            
+            
+            result = prepare.executeQuery();
+            DefaultTableModel model = (javax.swing.table.DefaultTableModel) table.getModel();
+            model.setRowCount(0);            
+            
+            while (result.next()) {
+                Object[] row = new Object[DbColumns.PURCHASEDCOLUMNS.getValues().length];
+                for (int i = 0; i < DbColumns.PURCHASEDCOLUMNS.getValues().length; i++) {
+                    row[i] = result.getObject(DbColumns.PURCHASEDCOLUMNS.getValues()[i]);
+                }
+                model.addRow(row);
+            }
+            
+            result.close();
+            prepare.close();
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
+        }        
     }
 }

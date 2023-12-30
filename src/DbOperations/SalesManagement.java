@@ -55,12 +55,14 @@ public class SalesManagement extends DbConnection{
         }
     }
     
-    public String generateReceipt(DefaultTableModel model, String getDate) {
+    public String generateReceipt(DefaultTableModel model, String getDate, String invoiceNum) {
         StringBuilder receipt = new StringBuilder();
 
-        receipt.append("                                    Josuan\n");
+        receipt.append("                                     Josuan\n");
         receipt.append("----------------------------------------------------------------\n");
         receipt.append("                                    Receipt\n");
+        receipt.append("----------------------------------------------------------------\n");
+        receipt.append("                                "+invoiceNum+"\n");
         receipt.append("----------------------------------------------------------------\n");
 
         String currentDate = getDate;
@@ -90,7 +92,7 @@ public class SalesManagement extends DbConnection{
             subtotalSum += ((Number) model.getValueAt(i, 4)).doubleValue(); // Summing up subtotals
             totalSum += ((Number) model.getValueAt(i, 5)).doubleValue(); // Summing up totals
         }
-
+        
         receipt.append(String.format("Subtotal:                 "+Helper.currency+"%.2f\n", subtotalSum));
         receipt.append(String.format("Total:                    "+Helper.currency+"%.2f\n", totalSum));
         receipt.append("----------------------------------------------------------------\n\n");

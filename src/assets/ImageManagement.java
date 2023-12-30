@@ -263,24 +263,11 @@ public class ImageManagement {
         }   
     }
     
-    public static void deleteImage(String img) {
-        if (!img.equals("nullProfile.jpg")) {
-            String imagePath = "src/images/" + img;
-            File fileToDelete = new File(imagePath);
-
-            if (fileToDelete.exists()) {
-                boolean deletionStatus = fileToDelete.delete();
-
-                if (deletionStatus) {
-                    System.out.println("Image " + img + " deleted successfully.");
-                } else {
-                    System.out.println("Unable to delete image " + img);
-                }
-            } else {
-                System.out.println("Image " + img + " does not exist.");
-            }
-        } else {
-            System.out.println("Skipping deletion. Image is nullProfile.jpg.");
+    public static void deleteImage(String imageName) {
+        String folderPath = "src/images/";
+        File imageFile = new File(folderPath + imageName);
+        if (imageFile.exists()) {
+            imageFile.delete();
         }
     }
 }

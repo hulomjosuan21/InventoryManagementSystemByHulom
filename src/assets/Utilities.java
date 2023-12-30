@@ -190,9 +190,9 @@ public class Utilities extends DbOperations.DbConnection{
         return editedValue;
     }
     
-    public static String getComboxFromTable(JTable table) {
+    public static String getComboxFromTable(JTable table, int colIdx) {
         int row = table.getSelectedRow();
-        TableCellEditor editor = table.getCellEditor(row, 1);    
+        TableCellEditor editor = table.getCellEditor(row, colIdx);    
         if (editor instanceof DefaultCellEditor) {
             Component editorComponent = ((DefaultCellEditor) editor).getComponent();
             if (editorComponent instanceof JComboBox) {
@@ -433,7 +433,7 @@ public class Utilities extends DbOperations.DbConnection{
             JOptionPane.showMessageDialog(parentComponent, "Passwords do not match.");
             return null;
         }
-        return new Object[]{userId, first_LetterUpperCase(firstName), first_LetterUpperCase(lastName), userName, confirmPassword, get_AddedDate(birthDate), gender, imgName, firstUserPos};
+        return new Object[]{userId, firstName, lastName, userName, confirmPassword, get_AddedDate(birthDate), gender, imgName, firstUserPos};
     }
     
     public static String userIdGenerator(int numberOfUsers) {

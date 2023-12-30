@@ -12,30 +12,32 @@ public class InventoryManagement extends DbConnection{
         this.component = component;
     }
     
-    public DefaultTableModel DisplayInventoryData(){
-        String query = "SELECT * FROM " + DbTables.INVENTORYTABLE.getValue();
+    public void DisplayInventoryData(JTable table) {
+        String[] columnsToDisplay = DbColumns.IVENTORYCOLUMNS.getValues();
 
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[]{"Product ID","Category","Product Name","Description","Quantity","Retail Price","Date of Purchase"});
+        String query = "SELECT " + String.join(", ", columnsToDisplay) + " FROM " + DbTables.INVENTORYTABLE.getValue();
         try {
-            result = statement.executeQuery(query);
-            metaData = result.getMetaData();
-            int numberOfColumns = metaData.getColumnCount();
+            prepare = connection.prepareStatement(query);
+
+            result = prepare.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+            model.setRowCount(0);
 
             while (result.next()) {
-                Object[] rowData = new Object[numberOfColumns];
-                for (int i = 1; i <= numberOfColumns; i++) {
-                    rowData[i - 1] = result.getObject(i);
+                Object[] row = new Object[columnsToDisplay.length];
+                for (int i = 0; i < columnsToDisplay.length; i++) {
+                    row[i] = result.getObject(columnsToDisplay[i]);
                 }
-                model.addRow(rowData);
+                model.addRow(row);
             }
 
             result.close();
+            prepare.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
-        return model;
-    }   
+    }  
     
     public void addInventoryValue(String[] values){
         String query = "INSERT INTO "+DbTables.INVENTORYTABLE.getValue()+
@@ -58,12 +60,12 @@ public class InventoryManagement extends DbConnection{
         }
     }
     
-    public void EditInventoryValue(Object minuVal, int colIdx, Object p_n){
+    public void EditInventoryValue(Object newVal, int colIdx, Object p_n){
         String query = "UPDATE " + DbTables.INVENTORYTABLE.getValue() + " SET " + DbColumns.IVENTORYCOLUMNS.getValues()[colIdx] + " = ? WHERE " + DbColumns.IVENTORYCOLUMNS.getValues()[0] + " = ?";
 
         try {
             prepare = connection.prepareStatement(query);
-            prepare.setObject(1, minuVal);
+            prepare.setObject(1, newVal);
             prepare.setObject(2, p_n);
 
             prepare.executeUpdate();

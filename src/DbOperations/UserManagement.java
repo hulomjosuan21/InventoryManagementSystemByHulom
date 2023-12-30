@@ -6,6 +6,7 @@ import static DbOperations.DbConnection.statement;
 import java.awt.Component;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class UserManagement extends DbConnection{
@@ -15,34 +16,31 @@ public class UserManagement extends DbConnection{
         this.component = component;
     }
     
-    public DefaultTableModel DisplayUserData() {
-        String query = "SELECT " + DbColumns.USERSCOLUMNS.getValues()[0] + ", " + DbColumns.USERSCOLUMNS.getValues()[1] +
-                ", " + DbColumns.USERSCOLUMNS.getValues()[2] + ", " + DbColumns.USERSCOLUMNS.getValues()[3] +
-                ", " + DbColumns.USERSCOLUMNS.getValues()[4] + ", " + DbColumns.USERSCOLUMNS.getValues()[5] +
-                ", " + DbColumns.USERSCOLUMNS.getValues()[6] + ", " + DbColumns.USERSCOLUMNS.getValues()[7] +
-                ", " + DbColumns.USERSCOLUMNS.getValues()[8] + " FROM " + DbTables.USERTABLE.getValue();
+    public void DisplayUserData(JTable table) {
+        String[] columnsToDisplay = DbColumns.USERSCOLUMNS.getValues();
 
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[]{"User ID", "First Name", "Last Name", "Username", "Password", "Birth Date", "Gender", "Image", "User Position"});
-
+        String query = "SELECT " + String.join(", ", columnsToDisplay) + " FROM " + DbTables.USERTABLE.getValue();
         try {
-            result = statement.executeQuery(query);
-            metaData = result.getMetaData();
-            int numberOfColumns = metaData.getColumnCount();
+            prepare = connection.prepareStatement(query);
+
+            result = prepare.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+            model.setRowCount(0);
 
             while (result.next()) {
-                Object[] rowData = new Object[numberOfColumns];
-                for (int i = 0; i < numberOfColumns; i++) {
-                    rowData[i] = result.getObject(i + 1);
+                Object[] row = new Object[columnsToDisplay.length];
+                for (int i = 0; i < columnsToDisplay.length; i++) {
+                    row[i] = result.getObject(columnsToDisplay[i]);
                 }
-                model.addRow(rowData);
+                model.addRow(row);
             }
 
             result.close();
+            prepare.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
-        return model;
     }
     
     public String getUserId(String u_name,String u_pass){
@@ -372,6 +370,21 @@ public class UserManagement extends DbConnection{
             prepare.executeUpdate();
             prepare.close();
         } catch(SQLException e) {
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void EditUserData(Object newVal, int colIdx, Object p_n){
+        String query = "UPDATE " + DbTables.USERTABLE.getValue() + " SET " + DbColumns.USERSCOLUMNS.getValues()[colIdx] + " = ? WHERE " + DbColumns.USERSCOLUMNS.getValues()[0] + " = ?";
+
+        try {
+            prepare = connection.prepareStatement(query);
+            prepare.setObject(1, newVal);
+            prepare.setObject(2, p_n);
+
+            prepare.executeUpdate();
+            prepare.close();
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
     }
