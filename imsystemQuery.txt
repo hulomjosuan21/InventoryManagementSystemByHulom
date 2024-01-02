@@ -1,23 +1,18 @@
--- Create the database
 CREATE DATABASE IF NOT EXISTS mydb;
 
--- Use the created database
 USE mydb;
 
--- Create apptable
 CREATE TABLE IF NOT EXISTS apptable (
     appID INT AUTO_INCREMENT PRIMARY KEY,
     currentUser VARCHAR(45) NOT NULL
 );
 
--- Create categorytable
 CREATE TABLE IF NOT EXISTS categorytable (
     categoryID INT AUTO_INCREMENT PRIMARY KEY,
     categoryName VARCHAR(45) NOT NULL UNIQUE,
     dateCreated DATE NOT NULL
 );
 
--- Create inventorytable
 CREATE TABLE IF NOT EXISTS inventorytable (
     productID INT AUTO_INCREMENT PRIMARY KEY,
     Category VARCHAR(45) NOT NULL,
@@ -29,7 +24,6 @@ CREATE TABLE IF NOT EXISTS inventorytable (
     UNIQUE (Category, ProductName)
 );
 
--- Create purchasedtable
 CREATE TABLE IF NOT EXISTS purchasedtable (
     invoiceNumber VARCHAR(12),
     product VARCHAR(12),
@@ -40,7 +34,6 @@ CREATE TABLE IF NOT EXISTS purchasedtable (
     purchasedDate DATE
 );
 
--- Create userstable
 CREATE TABLE IF NOT EXISTS userstable (
     userId VARCHAR(45) PRIMARY KEY,
     firstname VARCHAR(45) NOT NULL,
@@ -59,7 +52,7 @@ INSERT INTO userstable (userId, firstname, lastname, username, password, birthda
 VALUES 
 ('superuser.wan', 'Josuan', 'Hulom', 'admin@231', '123', '2004-02-21', 'Male', 'admin.jpg', 0),
 ('user001.wan', 'Ethel', 'Densing', 'ethel', '001', '2004-05-07', 'Female', '2023-12-21_ethel.jpg', 1),
-('user002.wan', 'Kylle', 'Alino', 'kylle', '002', '2003-11-07', 'Male', 'kylle.jpg', 1);
+('user003.wan', 'kyla jade', 'agua', 'kyla', '002', '2004-05-07', 'Female', '2023-12-28_kyla_jade.jpg', 1),
 
 INSERT INTO inventorytable (Category, ProductName, Description, Quantity, RetailPrice, DateOfPurchase)
 VALUES 
