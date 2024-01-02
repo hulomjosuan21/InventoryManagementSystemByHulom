@@ -11,16 +11,11 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.StandardCopyOption;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
 public final class ProfileHandler extends javax.swing.JFrame {
@@ -49,7 +44,6 @@ public final class ProfileHandler extends javax.swing.JFrame {
         this.oldImage = new File(profileIcon.toString());
     }
 
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -60,6 +54,7 @@ public final class ProfileHandler extends javax.swing.JFrame {
         imageAvatar1 = new customComponents.ImageAvatar();
         panelRound3 = new customComponents.PanelRound();
         imageAvatar2 = new customComponents.ImageAvatar();
+        openCamlabel = new javax.swing.JLabel();
         changeLabel = new javax.swing.JLabel();
         changeLabel1 = new javax.swing.JLabel();
         ChangeBtn = new javax.swing.JButton();
@@ -124,6 +119,16 @@ public final class ProfileHandler extends javax.swing.JFrame {
             }
         });
 
+        openCamlabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        openCamlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/camera.png"))); // NOI18N
+        openCamlabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openCamlabelMouseClicked(evt);
+            }
+        });
+        imageAvatar2.add(openCamlabel);
+        openCamlabel.setBounds(400, 140, 37, 33);
+
         changeLabel.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         changeLabel.setForeground(new java.awt.Color(224, 231, 255));
         changeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -176,11 +181,11 @@ public final class ProfileHandler extends javax.swing.JFrame {
             .addGroup(panelRound3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(imageAvatar2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(84, 84, 84)
+                .addGap(92, 92, 92)
                 .addGroup(panelRound3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(changeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(changeLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                 .addComponent(ChangeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
@@ -245,8 +250,8 @@ public final class ProfileHandler extends javax.swing.JFrame {
     
     private void ChangeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangeBtnActionPerformed
         File fromDropFile = ImageManagement.getDroppedFile(); 
-        File newImage = getNewImage(fromDropFile,fromLabelImage);
-        if (newImage != null) {
+        File newImage = getNewImage(fromDropFile, fromLabelImage);
+        if (newImage != null || fromDropFile != null) {
             File replacedFile = ImageManagement.replaceImageFile(oldImage, newImage);
             if (replacedFile != null && replacedFile.exists()) {
                 ImageIcon newIcon = new ImageIcon(replacedFile.getAbsolutePath());
@@ -254,6 +259,8 @@ public final class ProfileHandler extends javax.swing.JFrame {
                 returnIcon = imageAvatar1.getIcon();
                 changed = true;
             }    
+        } else {
+            JOptionPane.showMessageDialog(this, "No new image uploaded.", "No Image", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_ChangeBtnActionPerformed
 
@@ -285,14 +292,26 @@ public final class ProfileHandler extends javax.swing.JFrame {
     private void changeLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeLabelMouseExited
         changeLabel.setForeground(Helper.colors[1]);
     }//GEN-LAST:event_changeLabelMouseExited
- 
+
+    private void openCamlabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openCamlabelMouseClicked
+        Camera cam_A = new Camera();
+        cam_A.setVisible(true);
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                cam_A.startCamera();
+            }
+        }).start();
+    }//GEN-LAST:event_openCamlabelMouseClicked
+    
     public Icon returnIcon() {
         return returnIcon;
     }
     public boolean changedState() {
         return changed;
     }
-    public void backLabelActions(JLabel label,String[] iconName){
+    public static void backLabelActions(JLabel label,String[] iconName){
         label.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e){
@@ -337,6 +356,7 @@ public final class ProfileHandler extends javax.swing.JFrame {
     private customComponents.ImageAvatar imageAvatar1;
     private customComponents.ImageAvatar imageAvatar2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel openCamlabel;
     private customComponents.PanelRound panelRound1;
     private customComponents.PanelRound panelRound2;
     private customComponents.PanelRound panelRound3;

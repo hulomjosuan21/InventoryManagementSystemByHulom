@@ -34,6 +34,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Date;
 import javax.swing.Icon;
 import javax.swing.JTable;
+import org.opencv.core.Core;
 
 //@author Josuan
 public final class Application extends javax.swing.JFrame {
@@ -74,6 +75,7 @@ public final class Application extends javax.swing.JFrame {
     }
     
     public static void main(String args[]) {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         IntelliJTheme.setup(Application.class.getResourceAsStream("/theme_eclipse.theme.json"));
         DbConnection dbConnection = new DbConnection();
 
@@ -227,6 +229,7 @@ public final class Application extends javax.swing.JFrame {
         panelRound1 = new customComponents.PanelRound();
         fullnameLabel = new javax.swing.JLabel();
         genderLabel = new javax.swing.JLabel();
+        panelRound23 = new customComponents.PanelRound();
         panelRound9 = new customComponents.PanelRound();
         panelRound19 = new customComponents.PanelRound();
         adminSettingsLabel = new javax.swing.JLabel();
@@ -879,7 +882,7 @@ public final class Application extends javax.swing.JFrame {
                 .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(usernameLabel)
-                .addContainerGap(333, Short.MAX_VALUE))
+                .addContainerGap(343, Short.MAX_VALUE))
         );
 
         panelRound8.setBackground(new java.awt.Color(165, 180, 252));
@@ -921,15 +924,35 @@ public final class Application extends javax.swing.JFrame {
             }
         });
 
+        panelRound23.setBackground(new java.awt.Color(99, 102, 241));
+        panelRound23.setRoundBottomLeft(25);
+        panelRound23.setRoundBottomRight(25);
+        panelRound23.setRoundTopLeft(25);
+        panelRound23.setRoundTopRight(25);
+
+        javax.swing.GroupLayout panelRound23Layout = new javax.swing.GroupLayout(panelRound23);
+        panelRound23.setLayout(panelRound23Layout);
+        panelRound23Layout.setHorizontalGroup(
+            panelRound23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 688, Short.MAX_VALUE)
+        );
+        panelRound23Layout.setVerticalGroup(
+            panelRound23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout panelRound8Layout = new javax.swing.GroupLayout(panelRound8);
         panelRound8.setLayout(panelRound8Layout);
         panelRound8Layout.setHorizontalGroup(
             panelRound8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRound8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(genderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelRound1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelRound8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelRound8Layout.createSequentialGroup()
+                        .addComponent(genderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelRound1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelRound23, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelRound8Layout.setVerticalGroup(
@@ -939,7 +962,9 @@ public final class Application extends javax.swing.JFrame {
                 .addGroup(panelRound8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(genderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelRound1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelRound23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         panelRound9.setBackground(new java.awt.Color(165, 180, 252));
@@ -3262,7 +3287,8 @@ public final class Application extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
-        this.dispose();
+        //this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_closeBtnActionPerformed
 
     private void minimizeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimizeBtnActionPerformed
@@ -4238,8 +4264,9 @@ public final class Application extends javax.swing.JFrame {
         labelActions(priceListBack1, priceListLabel1, contentLayeredPane, priceListPanel);
         labelActions(settingsBack2, settingsLabel2, contentLayeredPane, settingsPanel);
         logoutLabelActions(logoutBack1, logoutLabel1);       
-        
+    
         labelActionNoBack(adminSettingsLabel,new Color[]{Helper.fontColors[0],Helper.colors[3],Helper.fontColors[0]});
+//        labelActionNoBack(changePasswordLabel,new Color[]{Helper.fontColors[0],Helper.colors[3],Helper.fontColors[0]});
         labelActionNoBack(usernameLabel,new Color[]{Helper.fontColors[0],Helper.colors[6],Helper.fontColors[0]});
         labelActionNoBack(uploadImageLabel,new Color[]{Helper.colors[8],Helper.colors[4],Helper.colors[9]});
         
@@ -4444,6 +4471,7 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound panelRound20;
     private customComponents.PanelRound panelRound21;
     private customComponents.PanelRound panelRound22;
+    private customComponents.PanelRound panelRound23;
     private customComponents.PanelRound panelRound3;
     private customComponents.PanelRound panelRound4;
     private customComponents.PanelRound panelRound5;
