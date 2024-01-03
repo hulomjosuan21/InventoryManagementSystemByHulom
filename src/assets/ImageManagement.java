@@ -119,7 +119,6 @@ public class ImageManagement {
             System.out.println("Image inserted successfully to src/images as " + newImageName);
         } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
-            e.printStackTrace();
         }
     }
     

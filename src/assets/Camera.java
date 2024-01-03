@@ -2,6 +2,7 @@ package assets;
 
 import com.formdev.flatlaf.IntelliJTheme;
 import java.awt.Color;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -102,11 +103,13 @@ public class Camera extends javax.swing.JFrame {
         image.release();
     }//GEN-LAST:event_backLabelMouseClicked
 
-    public void startCamera() {
+    public File startCamera() {
         capture = new VideoCapture(0);
         image = new Mat();
         byte[] imageData;
         ImageIcon icon;
+        File savedFile = null;
+
         while(true){
             capture.read(image);
 
@@ -116,15 +119,21 @@ public class Camera extends javax.swing.JFrame {
             imageData = buf.toArray();
             icon = new ImageIcon(imageData);
             screenCam.setIcon(icon);
+
             if(clicked){
                 String name = JOptionPane.showInputDialog(this, "Enter image name");
                 if(name == null){
                     name = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
                 }
-                Imgcodecs.imwrite("src/images/"+name+".jpg", image);
+                String filePath = "src/images/" + name + ".jpg";
+                Imgcodecs.imwrite(filePath, image);
+
+                savedFile = new File(filePath); 
                 clicked = false;
+                break; 
             }
         }
+        return savedFile; 
     }
     
     public static void main(String args[]) {

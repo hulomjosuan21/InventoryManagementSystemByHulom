@@ -12,6 +12,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -296,11 +297,11 @@ public final class ProfileHandler extends javax.swing.JFrame {
     private void openCamlabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openCamlabelMouseClicked
         Camera cam_A = new Camera();
         cam_A.setVisible(true);
-        
-        new Thread(new Runnable(){
+
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                cam_A.startCamera();
+                cam_A.startCamera(); 
             }
         }).start();
     }//GEN-LAST:event_openCamlabelMouseClicked

@@ -313,13 +313,6 @@ public final class Application extends javax.swing.JFrame {
         settingsPanel = new customComponents.PanelRound();
         settingsScrillPane = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        panelRound22 = new customComponents.PanelRound();
-        jLabel10 = new javax.swing.JLabel();
-        getPasswordPasswordField1 = new javax.swing.JPasswordField();
-        jLabel41 = new javax.swing.JLabel();
-        jLabel42 = new javax.swing.JLabel();
-        getConfirmPasswordPasswordField1 = new javax.swing.JPasswordField();
-        addCartBtn1 = new javax.swing.JButton();
         headerPanel = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         close_min_max_Panel = new javax.swing.JPanel();
@@ -1981,83 +1974,15 @@ public final class Application extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(224, 231, 255));
 
-        panelRound22.setBackground(new java.awt.Color(165, 180, 252));
-        panelRound22.setRoundBottomLeft(25);
-        panelRound22.setRoundBottomRight(25);
-        panelRound22.setRoundTopLeft(50);
-        panelRound22.setRoundTopRight(25);
-
-        jLabel10.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Change Password");
-
-        getPasswordPasswordField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
-
-        jLabel41.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel41.setText("New Password");
-
-        jLabel42.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel42.setText("Confirm New Password");
-
-        getConfirmPasswordPasswordField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
-
-        addCartBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit.png"))); // NOI18N
-        addCartBtn1.setText("CHANGE PASSWORD");
-        addCartBtn1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
-        addCartBtn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addCartBtn1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelRound22Layout = new javax.swing.GroupLayout(panelRound22);
-        panelRound22.setLayout(panelRound22Layout);
-        panelRound22Layout.setHorizontalGroup(
-            panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRound22Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel42)
-                    .addComponent(getConfirmPasswordPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                    .addComponent(jLabel41)
-                    .addComponent(getPasswordPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                    .addComponent(jLabel10)
-                    .addComponent(addCartBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(684, Short.MAX_VALUE))
-        );
-        panelRound22Layout.setVerticalGroup(
-            panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRound22Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel41)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(getPasswordPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel42)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(getConfirmPasswordPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addCartBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelRound22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 918, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelRound22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(602, Short.MAX_VALUE))
+            .addGap(0, 832, Short.MAX_VALUE)
         );
 
         settingsScrillPane.setViewportView(jPanel1);
@@ -4118,10 +4043,6 @@ public final class Application extends javax.swing.JFrame {
         
     }//GEN-LAST:event_usersTableMouseClicked
 
-    private void addCartBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCartBtn1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addCartBtn1ActionPerformed
-
     public static void switchPanel(JLayeredPane layered, JPanel panel){
         layered.removeAll();
         layered.add(panel);
@@ -4323,7 +4244,6 @@ public final class Application extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCartBtn;
-    private javax.swing.JButton addCartBtn1;
     private javax.swing.JButton addUserBtn;
     private javax.swing.JButton adminDeleteBtn;
     private javax.swing.JButton adminEditBtn;
@@ -4364,12 +4284,10 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JTextField getBalanceTextField;
     private com.toedter.calendar.JDateChooser getBirthDateDateChooser;
     private javax.swing.JPasswordField getConfirmPasswordPasswordField;
-    private javax.swing.JPasswordField getConfirmPasswordPasswordField1;
     private javax.swing.JTextField getFNameTextField;
     private javax.swing.JComboBox<String> getGenderComboBox;
     private javax.swing.JTextField getLNameTextField;
     private javax.swing.JPasswordField getPasswordPasswordField;
-    private javax.swing.JPasswordField getPasswordPasswordField1;
     private javax.swing.JTextField getTotalTextField;
     private javax.swing.JTextField getUNameTextField;
     private javax.swing.JPanel headerPanel;
@@ -4394,7 +4312,6 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JTextField itemNameTextField;
     private javax.swing.JLabel ivnLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
@@ -4426,8 +4343,6 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
-    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -4470,7 +4385,6 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound panelRound2;
     private customComponents.PanelRound panelRound20;
     private customComponents.PanelRound panelRound21;
-    private customComponents.PanelRound panelRound22;
     private customComponents.PanelRound panelRound23;
     private customComponents.PanelRound panelRound3;
     private customComponents.PanelRound panelRound4;
