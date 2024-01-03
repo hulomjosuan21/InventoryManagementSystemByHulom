@@ -30,6 +30,7 @@ import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Date;
 import javax.swing.Icon;
@@ -45,6 +46,7 @@ public final class Application extends javax.swing.JFrame {
     private final AppManagement AMT = new AppManagement(this);
     private final UserManagement UMT = new UserManagement(this);
     private final SalesManagement SMT = new SalesManagement(this);
+    private final ReportManagement RPMT = new ReportManagement(this);
     
     private static File get_imgFile1;
     
@@ -64,6 +66,7 @@ public final class Application extends javax.swing.JFrame {
         adminInit();
         recordInit();
         returnItemInit();
+        reportInit();
         if (this.getExtendedState() == this.MAXIMIZED_BOTH) {
             this.setExtendedState(this.NORMAL);
         } else {
@@ -183,6 +186,20 @@ public final class Application extends javax.swing.JFrame {
         
         SpinnerNumberModel spinnerModel1 = new SpinnerNumberModel(0, 0, 100, 10);
         discountSpinner.setModel(spinnerModel1);
+    }
+    
+    public void reportInit(){
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Object formattedDate = currentDate.format(formatter);
+        
+        searchReportComboBox.setModel(new DefaultComboBoxModel(DbColumns.REPORTOPTIONS.getValues()));
+        Object selectedItem = searchReportComboBox.getSelectedItem();
+        System.out.println(selectedItem);
+        
+        if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[0])){
+            RPMT.LoadSalesData(reportTable,formattedDate,formattedDate);
+        }
     }
     
     public void returnItemInit(){
@@ -310,6 +327,15 @@ public final class Application extends javax.swing.JFrame {
         returnitemTable = new javax.swing.JTable();
         priceListPanel = new customComponents.PanelRound();
         reportPanel = new customComponents.PanelRound();
+        panelRound22 = new customComponents.PanelRound();
+        searchReportComboBox = new javax.swing.JComboBox<>();
+        jLabel31 = new javax.swing.JLabel();
+        fromDateChooser = new com.toedter.calendar.JDateChooser();
+        jLabel41 = new javax.swing.JLabel();
+        toDateChooser = new com.toedter.calendar.JDateChooser();
+        printBtn1 = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        reportTable = new javax.swing.JTable();
         settingsPanel = new customComponents.PanelRound();
         settingsScrillPane = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
@@ -1953,15 +1979,110 @@ public final class Application extends javax.swing.JFrame {
         reportPanel.setBackground(new java.awt.Color(224, 231, 255));
         reportPanel.setRoundTopLeft(50);
 
+        panelRound22.setBackground(new java.awt.Color(165, 180, 252));
+        panelRound22.setRoundBottomLeft(25);
+        panelRound22.setRoundBottomRight(25);
+        panelRound22.setRoundTopLeft(50);
+        panelRound22.setRoundTopRight(25);
+
+        searchReportComboBox.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        searchReportComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        searchReportComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchReportComboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel31.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel31.setText("FROM DATE:");
+
+        fromDateChooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        fromDateChooser.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+
+        jLabel41.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jLabel41.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel41.setText("TO DATE:");
+
+        toDateChooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        toDateChooser.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+
+        printBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print.png"))); // NOI18N
+        printBtn1.setText("PRINT");
+        printBtn1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        printBtn1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                printBtn1StateChanged(evt);
+            }
+        });
+        printBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printBtn1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelRound22Layout = new javax.swing.GroupLayout(panelRound22);
+        panelRound22.setLayout(panelRound22Layout);
+        panelRound22Layout.setHorizontalGroup(
+            panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound22Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(searchReportComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fromDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel41)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(toDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addComponent(printBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+        );
+        panelRound22Layout.setVerticalGroup(
+            panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound22Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchReportComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(printBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(toDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel41)
+                    .addComponent(fromDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel31))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
+        reportTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Category", "Item Name", "Description", "Date", "Price", "Quantity", "Total"
+            }
+        ));
+        jScrollPane8.setViewportView(reportTable);
+
         javax.swing.GroupLayout reportPanelLayout = new javax.swing.GroupLayout(reportPanel);
         reportPanel.setLayout(reportPanelLayout);
         reportPanelLayout.setHorizontalGroup(
             reportPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 920, Short.MAX_VALUE)
+            .addGroup(reportPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(reportPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelRound22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane8))
+                .addContainerGap())
         );
         reportPanelLayout.setVerticalGroup(
             reportPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 555, Short.MAX_VALUE)
+            .addGroup(reportPanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(panelRound22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         contentLayeredPane.add(reportPanel, "card2");
@@ -4043,6 +4164,29 @@ public final class Application extends javax.swing.JFrame {
         
     }//GEN-LAST:event_usersTableMouseClicked
 
+    private void printBtn1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_printBtn1StateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printBtn1StateChanged
+
+    private void printBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printBtn1ActionPerformed
+
+    private void searchReportComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchReportComboBoxActionPerformed
+        Object selectedItem = searchReportComboBox.getSelectedItem();
+        Date fromDate = fromDateChooser.getDate();
+        Date toDate = toDateChooser.getDate();
+        
+        if(fromDate != null && toDate != null){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            Object formattedFromDate = dateFormat.format(fromDate);
+            Object formattedToDate = dateFormat.format(toDate);
+
+            RPMT.LoadSalesData(reportTable, formattedFromDate, formattedToDate);
+        }
+    }//GEN-LAST:event_searchReportComboBoxActionPerformed
+
     public static void switchPanel(JLayeredPane layered, JPanel panel){
         layered.removeAll();
         layered.add(panel);
@@ -4279,6 +4423,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JButton demoteBtn;
     private javax.swing.JTextField descriptionTextField;
     private javax.swing.JSpinner discountSpinner;
+    private com.toedter.calendar.JDateChooser fromDateChooser;
     private javax.swing.JLabel fullnameLabel;
     private javax.swing.JLabel genderLabel;
     private javax.swing.JTextField getBalanceTextField;
@@ -4333,6 +4478,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
@@ -4343,6 +4489,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -4356,6 +4503,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private customComponents.PanelRound logoutBack;
     private customComponents.PanelRound logoutBack1;
@@ -4385,6 +4533,7 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound panelRound2;
     private customComponents.PanelRound panelRound20;
     private customComponents.PanelRound panelRound21;
+    private customComponents.PanelRound panelRound22;
     private customComponents.PanelRound panelRound23;
     private customComponents.PanelRound panelRound3;
     private customComponents.PanelRound panelRound4;
@@ -4401,6 +4550,7 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound priceListPanel;
     private javax.swing.JSpinner priceSpinner;
     private javax.swing.JButton printBtn;
+    private javax.swing.JButton printBtn1;
     private javax.swing.JButton promoteBtn;
     private javax.swing.JSpinner quantitySpinner;
     private javax.swing.JTextField receivedTextField;
@@ -4409,6 +4559,7 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound reportBack;
     private javax.swing.JLabel reportLabel;
     private customComponents.PanelRound reportPanel;
+    private javax.swing.JTable reportTable;
     private customComponents.PanelRound returnItemBack;
     private customComponents.PanelRound returnItemBack1;
     private javax.swing.JButton returnItemBtn;
@@ -4425,6 +4576,7 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound salesPanel;
     private javax.swing.JTable salesTable1;
     private javax.swing.JTable salesTable2;
+    private javax.swing.JComboBox<String> searchReportComboBox;
     private customComponents.PanelRound settingsBack;
     private customComponents.PanelRound settingsBack2;
     private javax.swing.JLabel settingsLabel;
@@ -4438,6 +4590,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JButton testBtn1;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel titleLabel1;
+    private com.toedter.calendar.JDateChooser toDateChooser;
     private javax.swing.JLabel todaysalesLabel;
     private javax.swing.JLabel totalProductsLabel;
     private javax.swing.JLabel totalSalesLabel;
