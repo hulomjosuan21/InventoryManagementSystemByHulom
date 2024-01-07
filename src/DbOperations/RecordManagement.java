@@ -114,11 +114,12 @@ public class RecordManagement extends DbConnection{
         return totalProduct;
     }
 
-    public void recordPurchase(Object invoiceNum, Object item, Object discount, Object quantity, Object subtotal, Object total, Object date){
+    public void recordPurchase(Object invoiceNum, Object item, Object discount, Object quantity, Object subtotal, Object total, Object date,Object[] sellerName){
         String query = "INSERT INTO "+DbTables.PURCHASEDTABLE.getValue()+" ("+DbColumns.PURCHASEDCOLUMNS.getValues()[0]+
                 ", "+DbColumns.PURCHASEDCOLUMNS.getValues()[1]+", "+DbColumns.PURCHASEDCOLUMNS.getValues()[2]+
                 ", "+DbColumns.PURCHASEDCOLUMNS.getValues()[3]+", "+DbColumns.PURCHASEDCOLUMNS.getValues()[4]+
-                ", "+DbColumns.PURCHASEDCOLUMNS.getValues()[5]+", "+DbColumns.PURCHASEDCOLUMNS.getValues()[6]+") VALUES (?,?,?,?,?,?,?)";
+                ", "+DbColumns.PURCHASEDCOLUMNS.getValues()[5]+", "+DbColumns.PURCHASEDCOLUMNS.getValues()[6]+
+                ", "+DbColumns.PURCHASEDCOLUMNS.getValues()[7]+", "+DbColumns.PURCHASEDCOLUMNS.getValues()[8]+") VALUES (?,?,?,?,?,?,?,?,?)";
         
         try {
             prepare = connection.prepareStatement(query);
@@ -129,6 +130,8 @@ public class RecordManagement extends DbConnection{
             prepare.setObject(5, subtotal);
             prepare.setObject(6, total);
             prepare.setObject(7, date);
+            prepare.setObject(8, sellerName[0]);
+            prepare.setObject(9, sellerName[1]);
             prepare.executeUpdate();
             prepare.close();
         } catch(SQLException e) {

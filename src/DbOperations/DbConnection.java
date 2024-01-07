@@ -22,10 +22,9 @@ public class DbConnection {
     public DbConnection(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            this.connection = DriverManager.getConnection(url, username, password);
-            //this.connection = DriverManager.getConnection(urlOnline, usernameOnline, passwordOnline);
-            this.statement = connection.createStatement();
-        }catch(Exception e){
+            DbConnection.connection = DriverManager.getConnection(url, username, password);
+            DbConnection.statement = connection.createStatement();
+        }catch(ClassNotFoundException | SQLException e){
           
         }              
     }

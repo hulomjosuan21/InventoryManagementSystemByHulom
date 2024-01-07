@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/FOR%20CLONE/Documents/InventoryManagementSystemByHulom/src/DbOperations/InventoryManagement.java</file>
-            <file>file:/C:/Users/FOR%20CLONE/Documents/InventoryManagementSystemByHulom/src/DbOperations/ReportManagement.java</file>
-            <file>file:/C:/Users/FOR%20CLONE/Documents/InventoryManagementSystemByHulom/src/Application.java</file>
-            <file>file:/C:/Users/FOR%20CLONE/Documents/InventoryManagementSystemByHulom/src/DbOperations/DbColumns.java</file>
+            <file>file:/C:/Users/Josuan/Desktop/InventoryManagementSystemByHulom/src/MainClass.java</file>
+            <file>file:/C:/Users/Josuan/Desktop/InventoryManagementSystemByHulom/src/DbOperations/DbColumns.java</file>
+            <file>file:/C:/Users/Josuan/Desktop/InventoryManagementSystemByHulom/src/DbOperations/DbTables.java</file>
+            <file>file:/C:/Users/Josuan/Desktop/InventoryManagementSystemByHulom/src/DbOperations/ReportManagement.java</file>
+            <file>file:/C:/Users/Josuan/Desktop/InventoryManagementSystemByHulom/src/Application.java</file>
+            <file>file:/C:/Users/Josuan/Desktop/InventoryManagementSystemByHulom/src/DbOperations/DbConnection.java</file>
         </group>
     </open-files>
 </project-private>

@@ -4,14 +4,11 @@ import customComponents.*;
 import com.formdev.flatlaf.IntelliJTheme;
 import java.awt.Color;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.time.LocalDate;
-import java.util.EventObject;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -20,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
@@ -30,11 +26,9 @@ import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Date;
 import javax.swing.Icon;
-import javax.swing.JTable;
 import org.opencv.core.Core;
 
 //@author Josuan
@@ -76,30 +70,7 @@ public final class Application extends javax.swing.JFrame {
         ImageManagement.setupFileDragAndDrop(uploadPanel1, new Color(204,204,204),imageAvatar2);
         
     }
-    
-    public static void main(String args[]) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        IntelliJTheme.setup(Application.class.getResourceAsStream("/theme_eclipse.theme.json"));
-        DbConnection dbConnection = new DbConnection();
-
-        if (dbConnection.isDatabaseConnected()) {
-            String value = AppManagement.getCurrentUser(new Application());
-            boolean checkUser = new UserManagement(new Application()).checkCurrentUser(value);
-            
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    if(!checkUser){
-                        new LoginFrame().setVisible(true);
-                    }else{
-                        new Application().setVisible(true);
-                    }
-                }
-            });
-        } else {
-            JOptionPane.showMessageDialog(null, "Error: No database connected!", "Database Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
+        
     public void inventoryInit(){
         IMT.DisplayInventoryData(inventoryTable);
         im4.setModel(new DefaultComboBoxModel(CMT.AddElementToComboBox()));
@@ -113,6 +84,7 @@ public final class Application extends javax.swing.JFrame {
     }
     
     public void recordInit(){
+        im4.setModel(new DefaultComboBoxModel(CMT.AddElementToComboBox()));
         totalProductsLabel.setText(RMT.countProducts()+"");
         soldOldLabel.setText(RMT.getProductSold()+"");
         soldTotayLabel.setText(RMT.getProductSoldToday()+"");
@@ -189,17 +161,17 @@ public final class Application extends javax.swing.JFrame {
     }
     
     public void reportInit(){
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Object formattedDate = currentDate.format(formatter);
+//        LocalDate currentDate = LocalDate.now();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        Object formattedDate = currentDate.format(formatter);
         
         searchReportComboBox.setModel(new DefaultComboBoxModel(DbColumns.REPORTOPTIONS.getValues()));
-        Object selectedItem = searchReportComboBox.getSelectedItem();
-        System.out.println(selectedItem);
-        
-        if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[0])){
-            RPMT.LoadSalesData(reportTable,formattedDate,formattedDate);
-        }
+//        Object selectedItem = searchReportComboBox.getSelectedItem();
+//        System.out.println(selectedItem);
+//        
+//        if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[0])){
+//            RPMT.LoadSalesData(reportTable,formattedDate,formattedDate);
+//        }
     }
     
     public void returnItemInit(){
@@ -334,6 +306,7 @@ public final class Application extends javax.swing.JFrame {
         jLabel41 = new javax.swing.JLabel();
         toDateChooser = new com.toedter.calendar.JDateChooser();
         printBtn1 = new javax.swing.JButton();
+        reportSearchBtn = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
         reportTable = new javax.swing.JTable();
         settingsPanel = new customComponents.PanelRound();
@@ -2021,21 +1994,37 @@ public final class Application extends javax.swing.JFrame {
             }
         });
 
+        reportSearchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
+        reportSearchBtn.setText("SEARCH");
+        reportSearchBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 48, 163)));
+        reportSearchBtn.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                reportSearchBtnStateChanged(evt);
+            }
+        });
+        reportSearchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportSearchBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelRound22Layout = new javax.swing.GroupLayout(panelRound22);
         panelRound22.setLayout(panelRound22Layout);
         panelRound22Layout.setHorizontalGroup(
             panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRound22Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(searchReportComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(reportSearchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(searchReportComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
                 .addComponent(jLabel31)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fromDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addComponent(fromDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel41)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(toDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(toDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
                 .addComponent(printBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
@@ -2044,13 +2033,14 @@ public final class Application extends javax.swing.JFrame {
             panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRound22Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchReportComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(printBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(toDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelRound22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(searchReportComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(printBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(toDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                     .addComponent(jLabel41)
-                    .addComponent(fromDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel31))
+                    .addComponent(fromDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(jLabel31)
+                    .addComponent(reportSearchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -2059,7 +2049,7 @@ public final class Application extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Category", "Item Name", "Description", "Date", "Price", "Quantity", "Total"
+
             }
         ));
         jScrollPane8.setViewportView(reportTable);
@@ -3931,6 +3921,10 @@ public final class Application extends javax.swing.JFrame {
     }//GEN-LAST:event_discountSpinnerStateChanged
 
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
+        String get_id = AppManagement.getCurrentUser(this);
+        String sellerf = UMT.getFName(get_id);
+        String sellerl = UMT.getLName(get_id);
+        
         DefaultTableModel model = (DefaultTableModel) salesTable2.getModel();
         
         String getINV = SMT.generateInvoiceNumber();
@@ -3950,7 +3944,7 @@ public final class Application extends javax.swing.JFrame {
             Object subtotal = model.getValueAt(i, 4);
             Object total = model.getValueAt(i, 5);
             
-            RMT.recordPurchase(invoiceTextField.getText(), item, discountPercent,quantity,subtotal,total,dateRec);
+            RMT.recordPurchase(invoiceTextField.getText(), item, discountPercent,quantity,subtotal,total,dateRec,new Object[]{sellerf,sellerl});
             System.out.println();
         }
         
@@ -4171,8 +4165,20 @@ public final class Application extends javax.swing.JFrame {
     private void printBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtn1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_printBtn1ActionPerformed
-
+     
+    DefaultTableModel reportTableModel;
     private void searchReportComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchReportComboBoxActionPerformed
+
+    }//GEN-LAST:event_searchReportComboBoxActionPerformed
+
+    private void reportSearchBtnStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_reportSearchBtnStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reportSearchBtnStateChanged
+    String[][] cols = {{"Category","Item Name","Description","Date","Price","Quantity","Total","Seller Firstnane","Seller Lastname"},
+                        {"Product ID","Category","Product Name","Description","Quantity","Retail Price","Date of Purchase"},
+                        {"Product Name","Date out of stock"},{"Category","Item Name","Description","Date","Price","Quantity","Total"},
+                        {"Item Name","Quantity","Total","Date of Purchase"},{"Seller Firstnane","Seller Lastname","Quantity"}};
+    private void reportSearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportSearchBtnActionPerformed
         Object selectedItem = searchReportComboBox.getSelectedItem();
         Date fromDate = fromDateChooser.getDate();
         Date toDate = toDateChooser.getDate();
@@ -4183,9 +4189,84 @@ public final class Application extends javax.swing.JFrame {
             Object formattedFromDate = dateFormat.format(fromDate);
             Object formattedToDate = dateFormat.format(toDate);
 
-            RPMT.LoadSalesData(reportTable, formattedFromDate, formattedToDate);
+            if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[0])){
+                reportTableModel = new DefaultTableModel(null,cols[0]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel);
+                RPMT.LoadSalesData(reportTable, formattedFromDate, formattedToDate);
+            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[1])){
+                reportTableModel = new DefaultTableModel(null,cols[1]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel);      
+                IMT.DisplayInventoryData(reportTable,formattedFromDate,formattedToDate);
+            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[2])){
+                reportTableModel = new DefaultTableModel(null,cols[1]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel);    
+                RPMT.LoadOutOfStocks(reportTable,formattedFromDate,formattedToDate);
+            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[3])){
+                reportTableModel = new DefaultTableModel(null,cols[4]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel);    
+                RPMT.LoadTopSales(reportTable,formattedFromDate,formattedToDate);
+            }
+        }else{
+            if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[1])){
+                reportTableModel = new DefaultTableModel(null,cols[1]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel);      
+                IMT.DisplayInventoryData(reportTable);
+            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[2])){
+                reportTableModel = new DefaultTableModel(null,cols[1]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel);    
+                RPMT.LoadOutOfStocks(reportTable);
+            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[3])){
+                reportTableModel = new DefaultTableModel(null,cols[4]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel); 
+                RPMT.LoadTopSales(reportTable);
+            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[4])){
+                reportTableModel = new DefaultTableModel(null,cols[5]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel); 
+                RPMT.LoadTopSellers(reportTable);
+            }
+            
         }
-    }//GEN-LAST:event_searchReportComboBoxActionPerformed
+    }//GEN-LAST:event_reportSearchBtnActionPerformed
 
     public static void switchPanel(JLayeredPane layered, JPanel panel){
         layered.removeAll();
@@ -4559,6 +4640,7 @@ public final class Application extends javax.swing.JFrame {
     private customComponents.PanelRound reportBack;
     private javax.swing.JLabel reportLabel;
     private customComponents.PanelRound reportPanel;
+    private javax.swing.JButton reportSearchBtn;
     private javax.swing.JTable reportTable;
     private customComponents.PanelRound returnItemBack;
     private customComponents.PanelRound returnItemBack1;

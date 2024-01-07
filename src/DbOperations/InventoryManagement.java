@@ -14,7 +14,6 @@ public class InventoryManagement extends DbConnection{
     
     public void DisplayInventoryData(JTable table) {
         String[] columnsToDisplay = DbColumns.IVENTORYCOLUMNS.getValues();
-
         String query = "SELECT " + String.join(", ", columnsToDisplay) + " FROM " + DbTables.INVENTORYTABLE.getValue();
         try {
             prepare = connection.prepareStatement(query);
@@ -38,6 +37,34 @@ public class InventoryManagement extends DbConnection{
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
     }  
+    
+    public void DisplayInventoryData(JTable table, Object fromDate, Object toDate) {
+        String[] columnsToDisplay = DbColumns.IVENTORYCOLUMNS.getValues();
+
+        String query = "SELECT " + String.join(", ", columnsToDisplay) + " FROM " + DbTables.INVENTORYTABLE.getValue() +
+                " WHERE "+DbColumns.IVENTORYCOLUMNS.getValues()[6]+" BETWEEN '" + fromDate + "' AND '" + toDate + "'";
+        try {
+            prepare = connection.prepareStatement(query);
+
+            result = prepare.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+            model.setRowCount(0);
+
+            while (result.next()) {
+                Object[] row = new Object[columnsToDisplay.length];
+                for (int i = 0; i < columnsToDisplay.length; i++) {
+                    row[i] = result.getObject(columnsToDisplay[i]);
+                }
+                model.addRow(row);
+            }
+
+            result.close();
+            prepare.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
+        }
+    } 
     
     public void addInventoryValue(String[] values){
         String query = "INSERT INTO "+DbTables.INVENTORYTABLE.getValue()+

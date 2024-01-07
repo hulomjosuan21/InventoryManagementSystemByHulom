@@ -2881,16 +2881,18 @@
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                                  <Component id="searchReportComboBox" min="-2" pref="149" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                  <Component id="reportSearchBtn" min="-2" pref="95" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="searchReportComboBox" min="-2" pref="120" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                                   <Component id="jLabel31" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="fromDateChooser" min="-2" pref="162" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Component id="fromDateChooser" min="-2" pref="120" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jLabel41" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="toDateChooser" min="-2" pref="162" max="-2" attributes="0"/>
+                                  <Component id="toDateChooser" min="-2" pref="120" max="-2" attributes="0"/>
                                   <EmptySpace pref="113" max="32767" attributes="0"/>
                                   <Component id="printBtn1" min="-2" pref="95" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -2901,13 +2903,14 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="searchReportComboBox" min="-2" pref="31" max="-2" attributes="0"/>
-                                      <Component id="printBtn1" alignment="0" min="-2" pref="31" max="-2" attributes="0"/>
-                                      <Component id="toDateChooser" alignment="0" min="-2" pref="31" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="searchReportComboBox" pref="31" max="32767" attributes="0"/>
+                                      <Component id="printBtn1" alignment="0" pref="31" max="32767" attributes="0"/>
+                                      <Component id="toDateChooser" alignment="0" pref="31" max="32767" attributes="0"/>
                                       <Component id="jLabel41" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="fromDateChooser" min="-2" pref="31" max="-2" attributes="0"/>
-                                      <Component id="jLabel31" min="-2" max="-2" attributes="0"/>
+                                      <Component id="fromDateChooser" pref="31" max="32767" attributes="0"/>
+                                      <Component id="jLabel31" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="reportSearchBtn" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace pref="34" max="32767" attributes="0"/>
                               </Group>
@@ -3007,6 +3010,25 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printBtn1ActionPerformed"/>
                           </Events>
                         </Component>
+                        <Component class="javax.swing.JButton" name="reportSearchBtn">
+                          <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/icons/search.png"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="SEARCH"/>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                                <LineBorder>
+                                  <Color PropertyName="color" blue="a3" green="30" red="37" type="rgb"/>
+                                </LineBorder>
+                              </Border>
+                            </Property>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="reportSearchBtnStateChanged"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reportSearchBtnActionPerformed"/>
+                          </Events>
+                        </Component>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane8">
@@ -3019,54 +3041,10 @@
                         <Component class="javax.swing.JTable" name="reportTable">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="7" rowCount="0">
-                                <Column editable="true" title="Category" type="java.lang.Object"/>
-                                <Column editable="true" title="Item Name" type="java.lang.Object"/>
-                                <Column editable="true" title="Description" type="java.lang.Object"/>
-                                <Column editable="true" title="Date" type="java.lang.Object"/>
-                                <Column editable="true" title="Price" type="java.lang.Object"/>
-                                <Column editable="true" title="Quantity" type="java.lang.Object"/>
-                                <Column editable="true" title="Total" type="java.lang.Object"/>
-                              </Table>
+                              <Table columnCount="0" rowCount="0"/>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                              <TableColumnModel selectionModel="0">
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                              </TableColumnModel>
+                              <TableColumnModel selectionModel="0"/>
                             </Property>
                             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
