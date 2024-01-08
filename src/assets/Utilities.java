@@ -28,6 +28,15 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.text.DefaultFormatter;
 
 public class Utilities extends DbOperations.DbConnection{
+    public static String formatNumber(double number) {
+        String[] suffix = new String[]{"", "k", "M", "B", "T"};
+        int index = 0;
+        while (number >= 1000 && index < suffix.length - 1) {
+            number /= 1000;
+            index++;
+        }
+        return String.format("%.1f%s", number, suffix[index]);
+    }
     
     public static String capitalizeEachWord(String fullName) {
         String[] words = fullName.split("\\s+"); 

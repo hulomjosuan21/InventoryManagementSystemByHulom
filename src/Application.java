@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Date;
 import javax.swing.Icon;
-import org.opencv.core.Core;
 
 //@author Josuan
 public final class Application extends javax.swing.JFrame {
@@ -89,10 +88,12 @@ public final class Application extends javax.swing.JFrame {
         soldOldLabel.setText(RMT.getProductSold()+"");
         soldTotayLabel.setText(RMT.getProductSoldToday()+"");
         outStockLabel.setText(RMT.getOutOfStocks()+"");
-        String formatted1 = String.format("%.1f", RMT.getTotalSalesToday());
-        String formatted2 = String.format("%.1f", RMT.getTotalSales());
-        todaysalesLabel.setText(Helper.currency+" "+formatted1);
-        totalSalesLabel.setText(Helper.currency+" "+formatted2);      
+        double formatted1 = RMT.getTotalSalesToday();
+        double formatted2 = RMT.getTotalSales();
+        todaysalesLabel.setText(Helper.currency+" "+Utilities.formatNumber(formatted1));
+        todaysalesLabel.setToolTipText(Helper.currency+" "+formatted1);
+        totalSalesLabel.setText(Helper.currency+" "+Utilities.formatNumber(formatted2));      
+        totalSalesLabel.setToolTipText(Helper.currency+" "+formatted2);
         inventoryTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(CMT.AddElementToComboBox())));
         salesCategoryComboBox.setModel(new DefaultComboBoxModel(CMT.AddElementToComboBox()));
     }
@@ -566,6 +567,11 @@ public final class Application extends javax.swing.JFrame {
         totalSalesLabel.setForeground(new java.awt.Color(255, 255, 255));
         totalSalesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         totalSalesLabel.setText("0");
+        totalSalesLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                totalSalesLabelMouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout d3Layout = new javax.swing.GroupLayout(d3);
         d3.setLayout(d3Layout);
@@ -755,6 +761,11 @@ public final class Application extends javax.swing.JFrame {
         todaysalesLabel.setForeground(new java.awt.Color(255, 255, 255));
         todaysalesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         todaysalesLabel.setText("0");
+        todaysalesLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                todaysalesLabelMouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout d6Layout = new javax.swing.GroupLayout(d6);
         d6.setLayout(d6Layout);
@@ -3398,50 +3409,6 @@ public final class Application extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "An unexpected error occurred. Please try again.", "Inventory", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_inventoryEditBtnActionPerformed
-
-//        int getSelectedRow = inventoryTable.getSelectedRow();
-//        int getSelectedColumn = inventoryTable.getSelectedColumn();
-//        try{
-//            if(getSelectedRow != -1 && getSelectedColumn != -1){
-//                Object oldValue = inventoryTable.getValueAt(getSelectedRow, getSelectedColumn);
-//                int oldVal = 0;
-//                int newVal = 0;
-//                if(getSelectedColumn == 4){
-//                    oldVal = Integer.parseInt(oldValue.toString());
-//                }
-//
-//                Object newValue = null;
-//
-//                if (getSelectedColumn != 1 || newValue != null) {
-//                    if(getSelectedColumn == 2 || getSelectedColumn == 3){
-//                        newValue = Utilities.first_LetterUpperCase(Utilities.getSpinnerFromTable(inventoryTable));
-//                    } else {
-//                        newValue = Utilities.getSpinnerFromTable(inventoryTable);
-//                    }
-//                } else {
-//                    newValue = Utilities.getComboxFromTable(inventoryTable);
-//                }
-//
-//                if(getSelectedColumn == 4){
-//                    newVal = Integer.parseInt(newValue.toString());
-//                }
-//
-//                if(newValue != null && !oldValue.equals(newVal)) {
-//                    IMT.EditInventoryValue(newValue, getSelectedColumn, Utilities.get_RecordID(inventoryTable));
-//                } else {
-//                    if(newValue == null) {
-//                        JOptionPane.showMessageDialog(inventoryPanel, "New value cannot be null!", "Error", JOptionPane.ERROR_MESSAGE);
-//                    }
-//                }
-//            }else{
-//                JOptionPane.showMessageDialog(this, "No cell is being selected.", "Inventory", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//            inventoryInit();
-//            String get_val = (String) salesCategoryComboBox.getSelectedItem(); 
-//            SMT.loadInventoryData(salesTable1, get_val);
-//        }catch(Exception e){
-//            JOptionPane.showMessageDialog(this, "An unexpected error occurred. Please try again.", "Inventory", JOptionPane.ERROR_MESSAGE);
-//        }
     
     private void inventoryDeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventoryDeleteBtnActionPerformed
         if(Utilities.has_NoZeroVal(Utilities.get_RecordIDs(inventoryTable)) && inventoryTable.getSelectedRow() != -1){
@@ -4267,6 +4234,17 @@ public final class Application extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_reportSearchBtnActionPerformed
+            
+    private void totalSalesLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalSalesLabelMouseEntered
+        double formatted2 = RMT.getTotalSales();
+        totalSalesLabel.setToolTipText(Helper.currency+" "+formatted2);
+
+    }//GEN-LAST:event_totalSalesLabelMouseEntered
+
+    private void todaysalesLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_todaysalesLabelMouseEntered
+        double formatted1 = RMT.getTotalSalesToday();
+        todaysalesLabel.setToolTipText(Helper.currency+" "+formatted1);
+    }//GEN-LAST:event_todaysalesLabelMouseEntered
 
     public static void switchPanel(JLayeredPane layered, JPanel panel){
         layered.removeAll();
