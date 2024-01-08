@@ -4144,7 +4144,7 @@ public final class Application extends javax.swing.JFrame {
     String[][] cols = {{"Category","Item Name","Description","Date","Price","Quantity","Total","Seller Firstnane","Seller Lastname"},
                         {"Product ID","Category","Product Name","Description","Quantity","Retail Price","Date of Purchase"},
                         {"Product Name","Date out of stock"},{"Category","Item Name","Description","Date","Price","Quantity","Total"},
-                        {"Item Name","Quantity","Total","Date of Purchase"},{"Seller Firstnane","Seller Lastname","Quantity"}};
+                        {"Item Name","Quantity","Total","Date of Purchase"},{"Seller Firstnane","Seller Lastname","Quantity","Monthly"}};
     private void reportSearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportSearchBtnActionPerformed
         Object selectedItem = searchReportComboBox.getSelectedItem();
         Date fromDate = fromDateChooser.getDate();
@@ -4192,7 +4192,17 @@ public final class Application extends javax.swing.JFrame {
                 };
                 reportTable.setModel(reportTableModel);    
                 RPMT.LoadTopSales(reportTable,formattedFromDate,formattedToDate);
+            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[4])){
+                reportTableModel = new DefaultTableModel(null,cols[5]){
+                    @Override
+                    public boolean isCellEditable(int row, int column){
+                        return false;
+                    }
+                };
+                reportTable.setModel(reportTableModel); 
+                RPMT.LoadTopSellers(reportTable,formattedFromDate,formattedToDate);
             }
+            
         }else{
             if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[1])){
                 reportTableModel = new DefaultTableModel(null,cols[1]){

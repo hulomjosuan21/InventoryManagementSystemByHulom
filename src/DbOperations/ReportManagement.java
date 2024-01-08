@@ -162,13 +162,12 @@ public class ReportManagement extends DbConnection{
     }
     
     public void LoadTopSellers(JTable table) {
-        String[] columnsToDisplay = {DbColumns.PURCHASEDCOLUMNS.getValues()[7], DbColumns.PURCHASEDCOLUMNS.getValues()[8], DbColumns.PURCHASEDCOLUMNS.getValues()[3]};
+        String[] columnsToDisplay = {"sellerfname", "sellerlname", "month_year", "total_quantity"};
 
-        String query = "SELECT "+DbColumns.PURCHASEDCOLUMNS.getValues()[7]+
-                ", "+DbColumns.PURCHASEDCOLUMNS.getValues()[8]+", SUM("+DbColumns.PURCHASEDCOLUMNS.getValues()[3]+
-                ") AS total_quantity FROM "+DbTables.PURCHASEDTABLE.getValue()+
-                " GROUP BY "+DbColumns.PURCHASEDCOLUMNS.getValues()[7]+", "+DbColumns.PURCHASEDCOLUMNS.getValues()[8]+
-                " ORDER BY total_quantity DESC";
+        String query = "SELECT sellerfname, sellerlname, CONCAT(YEAR(purchasedDate), '-', LPAD(MONTH(purchasedDate), 2, '0')) AS month_year, SUM(quantity) as total_quantity " +
+                       "FROM purchasedtable " +
+                       "GROUP BY sellerfname, sellerlname, YEAR(purchasedDate), MONTH(purchasedDate) " +
+                       "ORDER BY YEAR(purchasedDate) DESC, MONTH(purchasedDate) DESC, total_quantity DESC";
 
         try {
             prepare = connection.prepareStatement(query);
@@ -179,9 +178,10 @@ public class ReportManagement extends DbConnection{
 
             while (result.next()) {
                 Object[] row = {
-                    result.getString(DbColumns.PURCHASEDCOLUMNS.getValues()[7]),
-                    result.getString(DbColumns.PURCHASEDCOLUMNS.getValues()[8]),
-                    result.getInt("total_quantity")
+                    result.getString("sellerfname"),
+                    result.getString("sellerlname"),
+                    result.getInt("total_quantity"),
+                    result.getString("month_year")
                 };
                 model.addRow(row);
             }
@@ -193,27 +193,29 @@ public class ReportManagement extends DbConnection{
         }
     }
 
-    public void LoadTopSellers(JTable table,Object fromDate, Object toDate){
-        String[] columnsToDisplay = {DbColumns.PURCHASEDCOLUMNS.getValues()[1],DbColumns.PURCHASEDCOLUMNS.getValues()[3],
-        DbColumns.PURCHASEDCOLUMNS.getValues()[5],DbColumns.PURCHASEDCOLUMNS.getValues()[6]};
-        
-        String query = "SELECT " + String.join(", ", columnsToDisplay) + " FROM " + DbTables.PURCHASEDTABLE.getValue() +
-                " WHERE " + DbColumns.PURCHASEDCOLUMNS.getValues()[6] + " BETWEEN '" + fromDate + "' AND '" + toDate + "'" +
-                " ORDER BY " + DbColumns.PURCHASEDCOLUMNS.getValues()[3] + " DESC";
+    public void LoadTopSellers(JTable table, Object fromDate, Object toDate) {
+        String query = "SELECT sellerfname, sellerlname, CONCAT(YEAR(purchasedDate), '-', LPAD(MONTH(purchasedDate), 2, '0')) AS month_year, SUM(quantity) as total_quantity " +
+                       "FROM purchasedtable " +
+                       "WHERE purchasedDate BETWEEN ? AND ? " +
+                       "GROUP BY sellerfname, sellerlname, YEAR(purchasedDate), MONTH(purchasedDate) " +
+                       "ORDER BY YEAR(purchasedDate) DESC, MONTH(purchasedDate) DESC, total_quantity DESC";
 
         try {
             prepare = connection.prepareStatement(query);
-
+            prepare.setObject(1, fromDate);
+            prepare.setObject(2, toDate); 
             result = prepare.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
 
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
             model.setRowCount(0);
 
             while (result.next()) {
-                Object[] row = new Object[columnsToDisplay.length];
-                for (int i = 0; i < columnsToDisplay.length; i++) {
-                    row[i] = result.getObject(columnsToDisplay[i]);
-                }
+                Object[] row = {
+                    result.getString("sellerfname"),
+                    result.getString("sellerlname"),
+                    result.getInt("total_quantity"),
+                    result.getString("month_year"),
+                };
                 model.addRow(row);
             }
 
@@ -221,6 +223,7 @@ public class ReportManagement extends DbConnection{
             prepare.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
-        }        
+        }
     }
+
 }
