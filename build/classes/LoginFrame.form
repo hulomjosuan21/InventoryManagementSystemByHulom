@@ -201,6 +201,9 @@
                       <Color blue="e5" green="46" red="4f" type="rgb"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="getUserNameActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

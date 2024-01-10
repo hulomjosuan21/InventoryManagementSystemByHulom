@@ -3662,7 +3662,6 @@ public final class Application extends javax.swing.JFrame {
         String oldTotalVal = getTotalTextField.getText();
         String receivedTextVal = receivedTextField.getText();
         if (selectedRow >= 0) {
-            double receivedVal = Double.parseDouble(receivedTextVal);
             double curTotalVal = Double.parseDouble(oldTotalVal);
             double minusVal = Double.parseDouble(model.getValueAt(selectedRow, 5).toString());
 
@@ -3681,14 +3680,19 @@ public final class Application extends javax.swing.JFrame {
                 payBtn.setEnabled(false);
                 printBtn.setEnabled(false);
             }
-            
+
             if (!receivedTextVal.isEmpty()) {
-                if (receivedVal < curTotalVal || curTotalVal == 0) {
-                    payBtn.setEnabled(false);
-                    printBtn.setEnabled(false);
-                } else {
-                    payBtn.setEnabled(true);
-                    printBtn.setEnabled(true);
+                try {
+                    double receivedVal = Double.parseDouble(receivedTextVal);
+                    if (receivedVal < curTotalVal || curTotalVal == 0) {
+                        payBtn.setEnabled(false);
+                        printBtn.setEnabled(false);
+                    } else {
+                        payBtn.setEnabled(true);
+                        printBtn.setEnabled(true);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid input for received amount.", "Sales", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 payBtn.setEnabled(false);

@@ -81,6 +81,11 @@ public class LoginFrame extends javax.swing.JFrame {
         getUserName.setLabelText("Username");
         getUserName.setLineColor(new java.awt.Color(79, 70, 229));
         getUserName.setSelectionColor(new java.awt.Color(79, 70, 229));
+        getUserName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getUserNameActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
         panelRound1.setLayout(panelRound1Layout);
@@ -225,7 +230,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
-        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_closeBtnActionPerformed
 
     private void minimizeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimizeBtnActionPerformed
@@ -233,7 +238,12 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_minimizeBtnActionPerformed
 
     private void getPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getPasswordActionPerformed
-        // TODO add your handling code here:
+        String get_username = getUserName.getText();
+        char[] get_p = getPassword.getPassword();
+        String get_password = new String(get_p);
+        
+        
+        loginMethod(get_username,get_password);
     }//GEN-LAST:event_getPasswordActionPerformed
    
     private void logInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInBtnActionPerformed
@@ -241,12 +251,26 @@ public class LoginFrame extends javax.swing.JFrame {
         char[] get_p = getPassword.getPassword();
         String get_password = new String(get_p);
         
-        short result = UMT.checkUserCredentials(get_username, get_password);
+        
+        loginMethod(get_username,get_password);
+    }//GEN-LAST:event_logInBtnActionPerformed
+
+    private void getUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserNameActionPerformed
+        String get_username = getUserName.getText();
+        char[] get_p = getPassword.getPassword();
+        String get_password = new String(get_p);
+        
+        
+        loginMethod(get_username,get_password);
+    }//GEN-LAST:event_getUserNameActionPerformed
+
+    private void loginMethod(String u, String p){
+        short result = UMT.checkUserCredentials(u, p);
 
         switch (result) {
             case 1:
                 JOptionPane.showMessageDialog(this, "Login successful!");
-                String current_user = UMT.getUserId(get_username, get_password);
+                String current_user = UMT.getUserId(u, p);
                 AppManagement.setCurrentUser(current_user, this);
                 System.out.println("Current user: "+current_user);            
                 
@@ -264,10 +288,9 @@ public class LoginFrame extends javax.swing.JFrame {
             default:
                 JOptionPane.showMessageDialog(this, "Invalid username and password!");
                 break;
-        }
-
-    }//GEN-LAST:event_logInBtnActionPerformed
-
+        }       
+    }
+    
 //    public static void main(String args[]) {
 //        IntelliJTheme.setup(Application.class.getResourceAsStream("/theme_eclipse.theme.json"));
 //        java.awt.EventQueue.invokeLater(new Runnable() {
