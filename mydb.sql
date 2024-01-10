@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2024 at 04:50 PM
+-- Generation Time: Jan 10, 2024 at 03:33 AM
 -- Server version: 8.1.0
 -- PHP Version: 8.2.4
 
@@ -85,22 +85,22 @@ CREATE TABLE `inventorytable` (
 --
 
 INSERT INTO `inventorytable` (`productID`, `Category`, `ProductName`, `Description`, `Quantity`, `RetailPrice`, `DateOfPurchase`) VALUES
-(1, 'Home Consoles', 'PlayStation 4', 'Best gaming console 2021', 499, 18000, '2023-01-01'),
-(2, 'Home Consoles', 'PlayStation 5', 'Best gaming console 2024', 296, 40000, '2023-01-31'),
-(3, 'Home Consoles', 'Xbox One', 'Best gaming console 2023', 800, 20000, '2023-02-01'),
-(4, 'Home Consoles', 'Xbox Series X', 'Best gaming console 2022', 595, 28000, '2023-03-08'),
+(1, 'Home Consoles', 'PlayStation 4', 'Best gaming console 2021', 498, 18000, '2023-01-01'),
+(2, 'Home Consoles', 'PlayStation 5', 'Best gaming console 2024', 0, 40000, '2023-01-31'),
+(3, 'Home Consoles', 'Xbox One', 'Best gaming console 2023', 795, 20000, '2023-02-01'),
+(4, 'Home Consoles', 'Xbox Series X', 'Best gaming console 2022', 593, 28000, '2023-03-08'),
 (5, 'Home Consoles', 'Nintendo Switch', 'Best gaming console 2022', 500, 17000, '2023-03-17'),
-(6, 'Home Consoles', 'Nintendo Switch Lite', 'Best affordable gaming console', 993, 12000, '2023-03-17'),
-(7, 'Portable Consoles', 'Nintendo 3DS', 'Best Handheld gaming devices', 900, 8000, '2023-03-28'),
-(8, 'Portable Consoles', 'PlayStation Vita', 'Best Handheld gaming devices', 995, 15000, '2023-03-31'),
+(6, 'Home Consoles', 'Nintendo Switch Lite', 'Best affordable gaming console', 992, 12000, '2023-03-17'),
+(7, 'Portable Consoles', 'Nintendo 3DS', 'Best Handheld gaming devices', 899, 8000, '2023-03-28'),
+(8, 'Portable Consoles', 'PlayStation Vita', 'Best Handheld gaming devices', 994, 15000, '2023-03-31'),
 (9, 'Desktop PCs', 'Lenovo Legion Tower 5i', 'The best gaming PC for most people', 997, 120000, '2023-04-05'),
 (10, 'Desktop PCs', 'HP Victus 15L', 'The best budget gaming P', 800, 60000, '2023-04-20'),
 (11, 'Desktop PCs', 'Acer Predator Orion 7000', 'A premium gaming PC', 699, 240000, '2023-04-29'),
 (12, 'Cables and Adapters', 'Alienware Aurora R16', 'The best budget gaming PC', 500, 54000, '2023-04-30'),
 (13, 'Laptops', 'Dell Alienware m16 R1', 'The best gaming laptop', 800, 90000, '2023-05-16'),
-(14, 'Laptops', 'Lenovo Legion Pro 5 Gen 8 16', 'Best mid-range pick', 997, 58000, '2023-05-27'),
+(14, 'Laptops', 'Lenovo Legion Pro 5 Gen 8 16', 'Best mid-range pick', 996, 58000, '2023-05-27'),
 (15, 'Laptops', 'ASUS TUF Dash F15', 'The best budget gaming laptop', 998, 45000, '2023-05-29'),
-(16, 'Laptops', 'Lenovo IdeaPad Gaming 3', 'The best laptop for gaming', 998, 63000, '2023-05-29'),
+(16, 'Laptops', 'Lenovo IdeaPad Gaming 3', 'The best laptop for gaming', 997, 63000, '2023-05-29'),
 (17, 'Laptops', 'Acer Chromebook 516 GE', 'The best gaming Chromebook', 897, 58000, '2023-05-30'),
 (18, 'Components (for DIY builds)', 'AMD Radeon RX 7800 XT', 'Best graphics card', 5000, 28000, '2023-06-11'),
 (19, 'Components (for DIY builds)', 'AMD Radeon RX 6600', 'Best budget graphics card', 6000, 15000, '2023-06-13'),
@@ -116,10 +116,10 @@ INSERT INTO `inventorytable` (`productID`, `Category`, `ProductName`, `Descripti
 (29, 'Components (for DIY builds)', 'Samsung 990 Pro', 'The fastest drive we\'ve tested to date', 17999, 13900, '2023-08-14'),
 (30, 'Components (for DIY builds)', 'WD Black SN850X', 'Top-tier performance', 14000, 12000, '2023-08-17'),
 (31, 'Keyboards', 'Keychron Q6', 'The best all-around mechanical keyboard', 19999, 7500, '2023-09-18'),
-(32, 'Keyboards', 'Razer Pro Type Ultra', 'For a less expensive option', 21000, 6000, '2023-09-19'),
+(32, 'Keyboards', 'Razer Pro Type Ultra', 'For a less expensive option', 20999, 6000, '2023-09-19'),
 (33, 'Keyboards', 'Royal Kludge RK1', 'The best budget mechanical keyboard', 29993, 1900, '2023-09-22'),
 (34, 'Mice', 'Logitech MX Master 3S', 'The best computer mouse we\'ve tested', 41993, 5000, '2023-09-23'),
-(35, 'Mice', 'Razer Basilisk V3', 'Looking for a mid-range option', 38992, 4500, '2023-09-23'),
+(35, 'Mice', 'Razer Basilisk V3', 'Looking for a mid-range option', 38991, 4500, '2023-09-23'),
 (36, 'Mice', 'Garuda Gear Hawk 1', 'Best budget Gaming mouse', 35996, 1200, '2023-09-25');
 
 -- --------------------------------------------------------
@@ -172,7 +172,19 @@ INSERT INTO `purchasedtable` (`invoiceNumber`, `product`, `discountPercent`, `qu
 ('96ce7044.wan', 'Keychron Q6', 0, 1, 7500, 7500, '2024-01-03', 'kyla jade', 'agua'),
 ('96ce7044.wan', 'Logitech MX Master 3S', 0, 1, 5000, 5000, '2024-01-03', 'kyla jade', 'agua'),
 ('96ce7044.wan', 'Lenovo Legion Tower 5i', 0.1, 1, 120000, 108000, '2024-01-03', 'kyla jade', 'agua'),
-('96ce7044.wan', 'Acer Chromebook 516 GE', 0.1, 1, 58000, 52200, '2024-01-03', 'kyla jade', 'agua');
+('96ce7044.wan', 'Acer Chromebook 516 GE', 0.1, 1, 58000, 52200, '2024-01-03', 'kyla jade', 'agua'),
+('aabb01fc.wan', 'Lenovo Legion Pro 5 Gen 8 16', 0.1, 1, 58000, 52200, '2024-01-08', 'josuan leonardo', 'hulom'),
+('ec90b8a4.wan', 'Xbox One', 0.1, 2, 40000, 36000, '2024-02-01', 'josuan leonardo', 'hulom'),
+('cac47aaa.wan', 'PlayStation Vita', 0.1, 1, 15000, 13500, '2024-02-03', 'josuan leonardo', 'hulom'),
+('a02788a1.wan', 'Nintendo Switch Lite', 0.1, 1, 12000, 10800, '2024-02-04', 'josuan leonardo', 'hulom'),
+('0a9766c3.wan', 'Xbox One', 0, 1, 20000, 20000, '2024-02-09', 'josuan leonardo', 'hulom'),
+('fabdbbc0.wan', 'Xbox One', 0, 2, 40000, 40000, '2024-02-15', 'josuan leonardo', 'hulom'),
+('0af0dfb8.wan', 'Razer Pro Type Ultra', 0.1, 1, 6000, 5400, '2024-01-10', 'josuan leonardo', 'hulom'),
+('e5be3ff0.wan', 'PlayStation 4', 0.1, 1, 18000, 16200, '2024-01-10', 'josuan leonardo', 'hulom'),
+('32db2b11.wan', 'Xbox Series X', 0.1, 2, 56000, 50400, '2024-02-16', 'josuan leonardo', 'hulom'),
+('6b4138cd.wan', 'Razer Basilisk V3', 0.1, 1, 4500, 4050, '2024-02-22', 'josuan leonardo', 'hulom'),
+('1ed809f7.wan', 'Nintendo 3DS', 0, 1, 8000, 8000, '2024-02-23', 'josuan leonardo', 'hulom'),
+('2dbceb83.wan', 'Lenovo IdeaPad Gaming 3', 0.1, 1, 63000, 56700, '2024-02-29', 'josuan leonardo', 'hulom');
 
 -- --------------------------------------------------------
 

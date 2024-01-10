@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import assets.Helper;
 
 public class InventoryManagement extends DbConnection{
     private final Component component;
@@ -65,6 +66,37 @@ public class InventoryManagement extends DbConnection{
             JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
         }
     } 
+    
+    public void ListOfPrice(JTable table){
+        String[] columnsToDisplay = {DbColumns.IVENTORYCOLUMNS.getValues()[1], DbColumns.IVENTORYCOLUMNS.getValues()[2], DbColumns.IVENTORYCOLUMNS.getValues()[5]};
+
+        String query = "SELECT " + String.join(", ", columnsToDisplay) + " FROM " + DbTables.INVENTORYTABLE.getValue();
+        try {
+            prepare = connection.prepareStatement(query);
+
+            result = prepare.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.setRowCount(0);
+
+            while (result.next()) {
+                Object[] row = new Object[columnsToDisplay.length];
+                for (int i = 0; i < columnsToDisplay.length; i++) {
+                    if (columnsToDisplay[i].equals(DbColumns.IVENTORYCOLUMNS.getValues()[5])) {
+                        double price = result.getDouble(columnsToDisplay[i]);
+                        row[i] = Helper.currency + " " +String.format("%.2f", price);
+                    } else {
+                        row[i] = result.getObject(columnsToDisplay[i]);
+                    }
+                }
+                model.addRow(row);
+            }
+
+            result.close();
+            prepare.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(component, e.getMessage(), "Error Code: " + e.getErrorCode(), JOptionPane.ERROR_MESSAGE);
+        }            
+    }
     
     public void addInventoryValue(String[] values){
         String query = "INSERT INTO "+DbTables.INVENTORYTABLE.getValue()+

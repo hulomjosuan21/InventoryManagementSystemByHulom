@@ -96,6 +96,7 @@ public final class Application extends javax.swing.JFrame {
         totalSalesLabel.setToolTipText(Helper.currency+" "+formatted2);
         inventoryTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(CMT.AddElementToComboBox())));
         salesCategoryComboBox.setModel(new DefaultComboBoxModel(CMT.AddElementToComboBox()));
+        IMT.ListOfPrice(priceListTable);
     }
     
     public void userInit(){
@@ -299,6 +300,8 @@ public final class Application extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         returnitemTable = new javax.swing.JTable();
         priceListPanel = new customComponents.PanelRound();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        priceListTable = new javax.swing.JTable();
         reportPanel = new customComponents.PanelRound();
         panelRound22 = new customComponents.PanelRound();
         searchReportComboBox = new javax.swing.JComboBox<>();
@@ -1947,15 +1950,39 @@ public final class Application extends javax.swing.JFrame {
         priceListPanel.setBackground(new java.awt.Color(224, 231, 255));
         priceListPanel.setRoundTopLeft(50);
 
+        priceListTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Category", "Item", "Price"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane9.setViewportView(priceListTable);
+
         javax.swing.GroupLayout priceListPanelLayout = new javax.swing.GroupLayout(priceListPanel);
         priceListPanel.setLayout(priceListPanelLayout);
         priceListPanelLayout.setHorizontalGroup(
             priceListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 920, Short.MAX_VALUE)
+            .addGroup(priceListPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 908, Short.MAX_VALUE)
+                .addContainerGap())
         );
         priceListPanelLayout.setVerticalGroup(
             priceListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 555, Short.MAX_VALUE)
+            .addGroup(priceListPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         contentLayeredPane.add(priceListPanel, "card2");
@@ -4590,6 +4617,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private customComponents.PanelRound logoutBack;
     private customComponents.PanelRound logoutBack1;
@@ -4634,6 +4662,7 @@ public final class Application extends javax.swing.JFrame {
     private javax.swing.JLabel priceListLabel;
     private javax.swing.JLabel priceListLabel1;
     private customComponents.PanelRound priceListPanel;
+    private javax.swing.JTable priceListTable;
     private javax.swing.JSpinner priceSpinner;
     private javax.swing.JButton printBtn;
     private javax.swing.JButton printBtn1;
