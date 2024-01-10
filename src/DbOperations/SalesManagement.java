@@ -7,10 +7,6 @@ import static DbOperations.DbConnection.result;
 import java.awt.Component;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -19,7 +15,10 @@ import javax.swing.table.DefaultTableModel;
 public class SalesManagement extends DbConnection{
     private final Component component;
     public final static double TAX_RATE = 0.12;
-    
+    private final String storeName = "HyperPlay Innovations";
+    private final String ownerName = "Josuan";
+    private final String contactNumber = "09999999999";
+    private final String address = "San Vicente St., Bogo City, Cebu, 434-8488";   
     public SalesManagement(Component component){
         this.component = component;
     }
@@ -58,11 +57,16 @@ public class SalesManagement extends DbConnection{
     public String generateReceipt(DefaultTableModel model, String getDate, String invoiceNum) {
         StringBuilder receipt = new StringBuilder();
 
-        receipt.append("                                     Josuan\n");
+        receipt.append(String.format("%50s\n", storeName));
         receipt.append("----------------------------------------------------------------\n");
-        receipt.append("                                    Receipt\n");
+        receipt.append(String.format("%50s\n", "Receipt"));
         receipt.append("----------------------------------------------------------------\n");
-        receipt.append("                                "+invoiceNum+"\n");
+        receipt.append(String.format("Store Owner: %22s\n", ownerName));
+        receipt.append(String.format("Contact#: %22s\n", contactNumber));
+        receipt.append("Address:\n");
+        receipt.append(String.format("%10s\n", address));
+        receipt.append("----------------------------------------------------------------\n");
+        receipt.append("SALES INVOICE:     " + invoiceNum + "\n");
         receipt.append("----------------------------------------------------------------\n");
 
         String currentDate = getDate;

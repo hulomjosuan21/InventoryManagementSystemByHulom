@@ -3912,7 +3912,8 @@ public final class Application extends javax.swing.JFrame {
             Object total = model.getValueAt(i, 5);
             
             RMT.recordPurchase(invoiceTextField.getText(), item, discountPercent,quantity,subtotal,total,dateRec,new Object[]{sellerf,sellerl});
-            System.out.println();
+            model.setRowCount(0);
+            dateCHooser.setDate(null);
         }
         
         IMT.DisplayInventoryData(inventoryTable);
@@ -4146,102 +4147,118 @@ public final class Application extends javax.swing.JFrame {
                         {"Product Name","Date out of stock"},{"Category","Item Name","Description","Date","Price","Quantity","Total"},
                         {"Item Name","Quantity","Total","Date of Purchase"},{"Seller Firstnane","Seller Lastname","Quantity","Monthly"}};
     private void reportSearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportSearchBtnActionPerformed
-        Object selectedItem = searchReportComboBox.getSelectedItem();
-        Date fromDate = fromDateChooser.getDate();
-        Date toDate = toDateChooser.getDate();
-        
-        if(fromDate != null && toDate != null){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Object selectedItem = searchReportComboBox.getSelectedItem();
+            Date fromDate = fromDateChooser.getDate();
+            Date toDate = toDateChooser.getDate();
 
-            Object formattedFromDate = dateFormat.format(fromDate);
-            Object formattedToDate = dateFormat.format(toDate);
+            if(fromDate != null && toDate != null){
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[0])){
-                reportTableModel = new DefaultTableModel(null,cols[0]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel);
-                RPMT.LoadSalesData(reportTable, formattedFromDate, formattedToDate);
-            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[1])){
-                reportTableModel = new DefaultTableModel(null,cols[1]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel);      
-                IMT.DisplayInventoryData(reportTable,formattedFromDate,formattedToDate);
-            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[2])){
-                reportTableModel = new DefaultTableModel(null,cols[1]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel);    
-                RPMT.LoadOutOfStocks(reportTable,formattedFromDate,formattedToDate);
-            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[3])){
-                reportTableModel = new DefaultTableModel(null,cols[4]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel);    
-                RPMT.LoadTopSales(reportTable,formattedFromDate,formattedToDate);
-            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[4])){
-                reportTableModel = new DefaultTableModel(null,cols[5]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel); 
-                RPMT.LoadTopSellers(reportTable,formattedFromDate,formattedToDate);
+                Object formattedFromDate = dateFormat.format(fromDate);
+                Object formattedToDate = dateFormat.format(toDate);
+
+                if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[0])){
+                    reportTableModel = new DefaultTableModel(null,cols[0]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel);
+                    RPMT.LoadSalesData(reportTable, formattedFromDate, formattedToDate);
+                }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[1])){
+                    reportTableModel = new DefaultTableModel(null,cols[1]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel);      
+                    IMT.DisplayInventoryData(reportTable,formattedFromDate,formattedToDate);
+                }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[2])){
+                    reportTableModel = new DefaultTableModel(null,cols[1]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel);    
+                    RPMT.LoadOutOfStocks(reportTable,formattedFromDate,formattedToDate);
+                }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[3])){
+                    reportTableModel = new DefaultTableModel(null,cols[4]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel);    
+                    RPMT.LoadTopSales(reportTable,formattedFromDate,formattedToDate);
+                }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[4])){
+                    reportTableModel = new DefaultTableModel(null,cols[5]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel); 
+                    RPMT.LoadTopSellers(reportTable,formattedFromDate,formattedToDate);
+                }
+
+            }else{
+                if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[0])){
+                    reportTableModel = new DefaultTableModel(null,cols[0]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel);      
+                    IMT.DisplayInventoryData(reportTable);
+                    RPMT.LoadSalesData(reportTable);
+                }if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[1])){
+                    reportTableModel = new DefaultTableModel(null,cols[1]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel);      
+                    IMT.DisplayInventoryData(reportTable);
+                }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[2])){
+                    reportTableModel = new DefaultTableModel(null,cols[1]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel);    
+                    RPMT.LoadOutOfStocks(reportTable);
+                }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[3])){
+                    reportTableModel = new DefaultTableModel(null,cols[4]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel); 
+                    RPMT.LoadTopSales(reportTable);
+                }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[4])){
+                    reportTableModel = new DefaultTableModel(null,cols[5]){
+                        @Override
+                        public boolean isCellEditable(int row, int column){
+                            return false;
+                        }
+                    };
+                    reportTable.setModel(reportTableModel); 
+                    RPMT.LoadTopSellers(reportTable);
+                }
+
             }
-            
-        }else{
-            if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[1])){
-                reportTableModel = new DefaultTableModel(null,cols[1]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel);      
-                IMT.DisplayInventoryData(reportTable);
-            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[2])){
-                reportTableModel = new DefaultTableModel(null,cols[1]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel);    
-                RPMT.LoadOutOfStocks(reportTable);
-            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[3])){
-                reportTableModel = new DefaultTableModel(null,cols[4]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel); 
-                RPMT.LoadTopSales(reportTable);
-            }else if(selectedItem.equals(DbColumns.REPORTOPTIONS.getValues()[4])){
-                reportTableModel = new DefaultTableModel(null,cols[5]){
-                    @Override
-                    public boolean isCellEditable(int row, int column){
-                        return false;
-                    }
-                };
-                reportTable.setModel(reportTableModel); 
-                RPMT.LoadTopSellers(reportTable);
-            }
-            
+        }catch (ArrayIndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(this, "An unexpected error occurred. Please try again.", "Report", JOptionPane.ERROR_MESSAGE);
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "An unexpected error occurred. Please try again.", "Report", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_reportSearchBtnActionPerformed
             
